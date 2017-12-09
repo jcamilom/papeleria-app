@@ -1,10 +1,33 @@
 {
   "name": "papeleria-app",
   "version": "0.0.1",
-  "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
+  "author": {
+    "name": "Camilo Muñoz",
+    "email": "jcamilomunozz@gmail.comm",
+    "url": "https://github.com/jcamilom"
+  },
+  "description": "ionic framework based electron project",
+  "main": "electron/electron.js",
+  "config": {
+    "ionic_bundler": "webpack",
+    "ionic_webpack": "./config/webpack.config.js"
+  },
+  "build": {
+    "appId": "com.xingke.papeleria-app",
+    "electronVersion": "1.7.9",
+    "asar":false,
+    "files": [
+      "www/**/*",
+      "electron/*"
+    ]
+  },
   "scripts": {
+    "dev": "nf start",
+    "start":"ionic-app-scripts serve",
+    "electron dist": "electron .",
+    "ebuild":"npm run build && node_modules/.bin/build",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
@@ -35,7 +58,9 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.5",
+    "electron": "^1.7.9",
+    "electron-builder": "^19.48.3",
+    "foreman": "^2.0.0",
     "typescript": "2.4.2"
-  },
-  "description": "An Ionic project"
+  }
 }
