@@ -1,21 +1,16 @@
 'use strict';
 const electron = require('electron');
 // Module to control application life.
-const {
-    app } = electron;
+const { app } = electron;
 // Module to create native browser window.
-const {
-    BrowserWindow
-} = electron;
+const { BrowserWindow } = electron;
 
 let win;
 
 function createWindow() {
-    // Create the browser window.
-    win = new BrowserWindow({
-        width: 1024,
-        height: 600
-    });
+    // Create a window that fills the whole screen.
+    const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+    win = new BrowserWindow({width, height});
 
     var url = process.env.E_URL || url.format({
         pathname: path.join(__dirname, '/../www/index.html'),
