@@ -6,36 +6,44 @@ import { Items } from '../../providers/providers';
 
 @IonicPage()
 @Component({
-  selector: 'page-search',
-  templateUrl: 'search.html'
+    selector: 'page-search',
+    templateUrl: 'search.html'
 })
 export class SearchPage {
+    
+    initialItems: any = [];
+    currentItems: any = [];
 
-  currentItems: any = [];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) { }
-
-  /**
-   * Perform a service for the proper items.
-   */
-  getItems(ev) {
-    let val = ev.target.value;
-    if (!val || !val.trim()) {
-      this.currentItems = [];
-      return;
+    constructor(public navCtrl: NavController, public navParams: NavParams, public items: Items) {
+        this.initializeItems();
     }
-    this.currentItems = this.items.query({
-      name: val
-    });
-  }
 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: Item) {
-    this.navCtrl.push('ItemDetailPage', {
-      item: item
-    });
-  }
+    initializeItems() {
+        this.initialItems = this.items.query();
+        this.currentItems = this.initialItems;
+    }
+
+    /**
+     * Perform a service for the proper items.
+     */
+    getItems(ev) {
+        let val = ev.target.value;
+        if (!val || !val.trim()) {
+            this.currentItems = this.initialItems;
+            return;
+        }
+        this.currentItems = this.items.query({
+            name: val
+        });
+    }
+
+    /**
+     * Navigate to the detail page for this item.
+     */
+    openItem(item: Item) {
+        this.navCtrl.push('ItemDetailPage', {
+            item: item
+        });
+    }
 
 }

@@ -44,5 +44,6 @@
 
   "CARDS_TITLE": "Social",
 
-  "SEARCH_TITLE": "Buscar"
+  "SEARCH_TITLE": "Buscar",
+  "SEARCH_PLACEHOLDER": "Busca items por nombre, id..."
 }

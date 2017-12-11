@@ -1,6 +1,6 @@
 <ion-split-pane when="xs">
     <!--  our side menu  -->
-    <ion-menu [content]="content">
+    <!-- <ion-menu [content]="content">
         <ion-header>
             <ion-toolbar>
             <ion-title>Pages</ion-title>
@@ -15,8 +15,11 @@
             </ion-list>
         </ion-content>
 
-    </ion-menu>
+    </ion-menu> -->
+
+    <!-- the search content -->
+    <ion-nav [root]="leftPage"></ion-nav>
 
     <!-- the main content -->
-    <ion-nav [root]="rootPage" #content main></ion-nav>
+    <ion-nav [root]="rightPage" main></ion-nav>
 </ion-split-pane>

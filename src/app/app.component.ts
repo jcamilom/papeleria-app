@@ -5,13 +5,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { Config, Nav, Platform } from 'ionic-angular';
 
 import { FirstRunPage } from '../pages/pages';
+import { LeftPage } from '../pages/pages';
 import { Settings } from '../providers/providers';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = FirstRunPage;
+  rightPage = FirstRunPage;
+  leftPage = LeftPage;
 
   @ViewChild(Nav) nav: Nav;
 
