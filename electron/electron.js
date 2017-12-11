@@ -4,13 +4,18 @@ const electron = require('electron');
 const { app } = electron;
 // Module to create native browser window.
 const { BrowserWindow } = electron;
+var path = require('path')
 
 let win;
 
 function createWindow() {
     // Create a window that fills the whole screen.
     const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
-    win = new BrowserWindow({width, height});
+    win = new BrowserWindow({
+        width,
+        height,
+        icon: path.join(__dirname, '/../www/assets/icons/png/128x128.png')
+    });
 
     var url = process.env.E_URL || url.format({
         pathname: path.join(__dirname, '/../www/index.html'),
