@@ -4,15 +4,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Config, Nav, Platform } from 'ionic-angular';
 
-import { FirstRunPage } from '../pages/pages';
-import { LeftPage } from '../pages/pages';
+import { MainPage, LeftPage } from '../pages/pages';
 import { Settings } from '../providers/providers';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rightPage = FirstRunPage;
+  rightPage = MainPage;
   leftPage = LeftPage;
 
   @ViewChild(Nav) nav: Nav;
