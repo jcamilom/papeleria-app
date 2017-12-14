@@ -1,21 +1,31 @@
 import { Injectable } from '@angular/core';
 
-import { Item } from '../../models/item';
 import { Api } from '../api/api';
+import { Observable } from 'rxjs/Observable';
+import { ItemsResponse } from '../../pages/search/search';
 
 @Injectable()
-export class Items {
+export class ItemsProvider {
+    
+    constructor(public api: Api) { }
 
-  constructor(public api: Api) { }
+    /**
+     * Send a GET request to our items endpoint.
+     */
+    getAllItems(): Observable<ItemsResponse> {
+        return this.api.get('items');
 
-  query(params?: any) {
-    return this.api.get('/items', params);
-  }
+   /*       seq.subscribe((res: any) => {
+            // If the API returned a successful response, mark the user as logged in
+            if(res.status == 'success') {
+                //this._loggedIn(res);
+                console.log("getAllItems success from ItemsProvider")
+            } else {}
+        }, err => {
+            console.error('ERROR', err);
+        });
 
-  add(item: Item) {
-  }
-
-  delete(item: Item) {
-  }
-
+        return seq; */
+    }
+    
 }

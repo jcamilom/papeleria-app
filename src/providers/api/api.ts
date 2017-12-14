@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class Api {
@@ -7,10 +8,11 @@ export class Api {
 
     constructor(public http: HttpClient) {}
 
-    get(endpoint: string, params ? : any, reqOpts ? : any) {
+    get(endpoint: string, params ? : any, reqOpts ? : any): Observable<any> {
         if(!reqOpts) {
             reqOpts = {
-                params: new HttpParams()
+                params: new HttpParams(),
+                //observe: 'response'
             };
         }
 
@@ -22,7 +24,7 @@ export class Api {
             }
         }
 
-        return this.http.get(this.url + '/' + endpoint, reqOpts);
+        return this.http.get<any>(this.url + '/' + endpoint, reqOpts);
     }
 
     post(endpoint: string, body: any, reqOpts ? : any) {
