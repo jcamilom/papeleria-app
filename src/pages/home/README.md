@@ -1,3 +1,3 @@
-# Content
+# Home Page
 
-The content page is a simple page meant for text content.
+To display the home content.
