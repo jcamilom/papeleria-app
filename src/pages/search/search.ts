@@ -4,11 +4,6 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { Item } from '../../models/item';
 import { ItemsProvider } from '../../providers/items/items';
 
-export interface ItemsResponse {
-    status: string;
-    data?: any[];
-}
-
 @IonicPage()
 @Component({
     selector: 'page-search',
@@ -32,26 +27,10 @@ export class SearchPage {
     // Attempt to get all the items.
     initializeItems() {
         this.itemsProvider.getAllItems().subscribe((resp) => {
-            if(resp.status == 'success') {
-                let items = resp.data;
-                //console.log(resp);
-                for (let item of items) {
-                    item.selected = false;
-                    this.allItems.push(new Item(item));
-                }
-                // Populate the all items in the search result.
-                this.queryItems = this.allItems;
-            } else {
-                console.log("Get all items bad request.");
-            }            
-        }, (err) => {            
-            // Unable to get all the items
-            let toast = this.toastCtrl.create({
-                message: 'error getting all the items',
-                duration: 3000,
-                position: 'top'
-            });
-            toast.present();
+            this.allItems = resp;
+            this.queryItems = this.allItems;
+        }, (err) => {
+            console.log("Component: error");
         });
     }
 

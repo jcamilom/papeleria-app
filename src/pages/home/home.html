@@ -4,7 +4,39 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="grid-basic-page">
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col></ion-col>
+            <ion-col></ion-col>
+            <ion-col>
+                <ion-toolbar class="toolb">
+                    <ion-title>Carrito de ventas</ion-title>
+                    <ion-buttons end>
+                        <button ion-button color="primary" outline>
+                            $4200
+                        </button>
+                    </ion-buttons>
+                </ion-toolbar>
+                <ion-list>
+                    <ion-item>
+                        <h2>Item name</h2>
+                        <p>$1500 (x2)</p>
+                        <ion-note item-end *ngIf="true">$3000</ion-note>
+                    </ion-item>
+                    <ion-item>
+                        <h2>Item name</h2>
+                        <p>$1200</p>
+                        <ion-note item-end *ngIf="true">$1200</ion-note>
+                        <!-- <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note> -->
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<!-- <ion-content class="grid-basic-page">
 
     <p padding>
         Equal-width columns
@@ -308,4 +340,4 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-</ion-content>
+</ion-content> -->
