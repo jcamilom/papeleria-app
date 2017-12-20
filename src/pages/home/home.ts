@@ -18,7 +18,7 @@ export class HomePage {
     }
 
     ionViewDidLoad() {
-        this.itemsProvider.currentMessage.subscribe(message => this.message = message)
+        this.itemsProvider.currentSelectedItems.subscribe(items => this.message = items[0]["name"])
     }
 
 }

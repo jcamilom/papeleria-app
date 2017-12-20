@@ -24,7 +24,7 @@ export class SearchPage {
 
     ionViewDidLoad() {
         this.initializeItems();
-        this.itemsProvider.currentMessage.subscribe(message => this.message = message)
+        this.itemsProvider.currentSelectedItems.subscribe(items => this.message = items[0]["name"])
     }
 
     // Attempt to get all the items.
@@ -73,6 +73,10 @@ export class SearchPage {
             }
             return null;
         });
+    }
+
+    changeSelectedItems(item: Item){
+        this.itemsProvider.changeSelectedItems([item]);
     }
 
 }

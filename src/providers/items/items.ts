@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-//import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -17,13 +16,13 @@ export class ItemsProvider {
 
     private activeItemResponse: ReplaySubject<any> = new ReplaySubject(1);
 
-    private messageSource = new BehaviorSubject<string>("default message");
-    currentMessage = this.messageSource.asObservable();
+    private selectedItemsSource = new BehaviorSubject<Item[]>([{name: "item-default-name", id: 1}]);
+    currentSelectedItems = this.selectedItemsSource.asObservable();
     
     constructor(private api: Api) { }
 
-    changeMessage(message: string) {
-        this.messageSource.next(message);
+    changeSelectedItems(items: Item[]) {
+        this.selectedItemsSource.next(items);
     }
 
     /**
