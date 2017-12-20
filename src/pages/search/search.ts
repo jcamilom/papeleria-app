@@ -13,8 +13,7 @@ export class SearchPage {
     
     allItems: Item[] = [];
     queryItems: Item[] = [];
-
-    message: string;
+    selectedItems: Item[] = [];
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -24,7 +23,7 @@ export class SearchPage {
 
     ionViewDidLoad() {
         this.initializeItems();
-        this.itemsProvider.currentSelectedItems.subscribe(items => this.message = items[0]["name"])
+        this.itemsProvider.currentSelectedItems.subscribe(items => this.selectedItems = items)
     }
 
     // Attempt to get all the items.
@@ -76,7 +75,13 @@ export class SearchPage {
     }
 
     changeSelectedItems(item: Item){
-        this.itemsProvider.changeSelectedItems([item]);
+        item.selected = !item.selected;
+        if(item.selected) {
+            this.selectedItems.push(item);
+        } else {
+            this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+        }
+        this.itemsProvider.changeSelectedItems(this.selectedItems);
     }
 
 }

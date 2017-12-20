@@ -16,7 +16,7 @@ export class ItemsProvider {
 
     private activeItemResponse: ReplaySubject<any> = new ReplaySubject(1);
 
-    private selectedItemsSource = new BehaviorSubject<Item[]>([{name: "item-default-name", id: 1}]);
+    private selectedItemsSource = new BehaviorSubject<Item[]>([]);
     currentSelectedItems = this.selectedItemsSource.asObservable();
     
     constructor(private api: Api) { }
