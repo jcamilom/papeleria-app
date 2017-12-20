@@ -36,6 +36,7 @@ export class ItemsProvider {
      */
     public getAllItems() {
         this.api.get('items').subscribe((resp) => {
+            console.log(this.currentSelectedItems);
             let allItems: Item[] = [];
             if(resp.status == 'success') {
                 let items = resp.data;                

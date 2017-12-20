@@ -13,7 +13,7 @@ export class SearchPage {
     
     allItems: Item[] = [];
     queryItems: Item[] = [];
-    selectedItems: Item[] = [];
+    selectedItems: Item[];
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -23,7 +23,7 @@ export class SearchPage {
 
     ionViewDidLoad() {
         this.initializeItems();
-        this.itemsProvider.currentSelectedItems.subscribe(items => this.selectedItems = items)
+        this.itemsProvider.currentSelectedItems.subscribe(items => this.selectedItems = items);        
     }
 
     // Attempt to get all the items.
