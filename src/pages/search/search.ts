@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
-import { ItemsProvider } from '../../providers/items/items';
+import { ItemsProvider } from '../../providers/providers';
 
 @IonicPage()
 @Component({
@@ -14,6 +14,8 @@ export class SearchPage {
     allItems: Item[] = [];
     queryItems: Item[] = [];
 
+    message: string;
+
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public toastCtrl: ToastController,
@@ -22,6 +24,7 @@ export class SearchPage {
 
     ionViewDidLoad() {
         this.initializeItems();
+        this.itemsProvider.currentMessage.subscribe(message => this.message = message)
     }
 
     // Attempt to get all the items.
@@ -55,7 +58,7 @@ export class SearchPage {
         this.navCtrl.push('ItemDetailPage', {
             item: item
         });
-    }    
+    }
 
     // For performance(?), the quey is made on items already obtained, not on the database.
     query(params?: any) {

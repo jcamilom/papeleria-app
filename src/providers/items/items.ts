@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 //import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Api } from '../api/api';
 
@@ -15,8 +16,15 @@ export interface ItemsResponse {
 export class ItemsProvider {
 
     private activeItemResponse: ReplaySubject<any> = new ReplaySubject(1);
+
+    private messageSource = new BehaviorSubject<string>("default message");
+    currentMessage = this.messageSource.asObservable();
     
     constructor(private api: Api) { }
+
+    changeMessage(message: string) {
+        this.messageSource.next(message);
+    }
 
     /**
      * Send a GET request to our items endpoint.

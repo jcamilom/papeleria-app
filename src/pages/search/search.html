@@ -8,6 +8,7 @@
 
 
 <ion-content>
+    {{ message }}
     <ion-searchbar
         (ionInput)="getItems($event)"
         [showCancelButton]="true"
@@ -24,7 +25,8 @@
                 Left Icon
             </button>
         </ion-item> -->
-        <button ion-item (click)="item.selected=!item.selected" *ngFor="let item of queryItems">
+        <!-- <button ion-item (click)="item.selected=!item.selected" *ngFor="let item of queryItems"> -->
+        <button ion-item (click)="itemsProvider.changeMessage(item.name)" *ngFor="let item of queryItems">
             <h2>{{item.name}}</h2>
             <p>Precio: ${{item.price}} | ID: {{item.id}} | {{item.nAvailable}}</p>
             <!-- <ion-note item-end *ngIf="!item.selected">{{item.id}}</ion-note> -->
