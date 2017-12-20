@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Api } from '../api/api';
 
 import { Item } from '../../models/item';
+import { concat } from 'rxjs/operator/concat';
+import { Observable } from 'rxjs/Observable';
 
 export interface ItemsResponse {
     status: string;
@@ -16,10 +18,14 @@ export class ItemsProvider {
 
     private activeItemResponse: ReplaySubject<any> = new ReplaySubject(1);
 
-    private selectedItemsSource = new BehaviorSubject<Item[]>([]);
-    currentSelectedItems = this.selectedItemsSource.asObservable();
+    private selectedItemsSource: BehaviorSubject<Item[]>;
+    public currentSelectedItems: Observable<Item[]>
     
-    constructor(private api: Api) { }
+    constructor(private api: Api) {
+        console.log("ItemsProvider Constructor!");
+        this.selectedItemsSource = new BehaviorSubject<Item[]>([]);
+        this.currentSelectedItems = this.selectedItemsSource.asObservable();
+    }
 
     changeSelectedItems(items: Item[]) {
         this.selectedItemsSource.next(items);

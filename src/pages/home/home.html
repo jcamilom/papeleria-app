@@ -18,6 +18,9 @@
                         </button>
                     </ion-buttons>
                 </ion-toolbar>
+                <ion-note *ngIf="selectedItems.length==0">
+                    No hay items para mostrar.
+                </ion-note>
                 <ion-list>
                     <ion-item *ngFor="let item of selectedItems">
                         <h2>{{item.name}}</h2>
