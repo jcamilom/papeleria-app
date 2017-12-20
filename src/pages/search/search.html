@@ -28,7 +28,8 @@
         <!-- <button ion-item (click)="item.selected=!item.selected" *ngFor="let item of queryItems"> -->
         <button ion-item (click)="changeSelectedItems(item)" *ngFor="let item of queryItems">
             <h2>{{item.name}}</h2>
-            <p>Precio: ${{item.price}} | ID: {{item.id}} | {{item.nAvailable}}</p>
+            <p>Precio: {{item.price | currency:'COP':'symbol-narrow':'1.0'}}
+                 | ID: {{item.id}} | {{item.nAvailable}}</p>
             <!-- <ion-note item-end *ngIf="!item.selected">{{item.id}}</ion-note> -->
             <ion-icon name="basket" small item-end *ngIf="item.selected"></ion-icon>
         </button>

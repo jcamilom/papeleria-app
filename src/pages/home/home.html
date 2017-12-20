@@ -24,8 +24,10 @@
                 <ion-list>
                     <ion-item *ngFor="let item of selectedItems">
                         <h2>{{item.name}}</h2>
-                        <p>${{item.price}}</p>
-                        <ion-note item-end *ngIf="true">${{item.price}}</ion-note>
+                        <p>{{item.price | currency:'COP':'symbol-narrow':'1.0'}}</p>
+                        <ion-note item-end *ngIf="true">
+                            {{item.price | currency:'COP':'symbol-narrow':'1.0'}}
+                        </ion-note>
                     </ion-item>
                 </ion-list>
             </ion-col>
