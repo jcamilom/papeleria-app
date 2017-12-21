@@ -22,11 +22,48 @@
                     No hay items para mostrar.
                 </ion-note>
                 <ion-list>
-                    <ion-item *ngFor="let item of selectedItems">
+                    <ion-item *ngFor="let item of selectedItems" class="item-shoping-cart">
                         <h2>{{item.name}}</h2>
-                        <p>{{item.price | currency:'COP':'symbol-narrow':'1.0'}}</p>
-                        <ion-note item-end *ngIf="true">
+                        <!-- <ion-grid>
+                            <ion-row>
+                                <ion-col col-4>
+                                    <p>{{item.price | currency:'COP':'symbol-narrow':'1.0'}}</p>
+                                </ion-col>
+                                <ion-col col-4>
+                                    <button ion-button icon-only round clear small>
+                                        <ion-icon name="remove-circle"></ion-icon>
+                                    </button>
+                                    {{item.nAvailable}}
+                                    <button ion-button icon-only round clear small>
+                                            <ion-icon name="add-circle"></ion-icon>
+                                    </button>
+                                </ion-col>
+                                <ion-col col-4>
+                                </ion-col>                                
+                            </ion-row>
+                        </ion-grid> -->
+                        <p>
                             {{item.price | currency:'COP':'symbol-narrow':'1.0'}}
+                            <!-- <button ion-button icon-only round clear small>
+                                <ion-icon name="remove-circle"></ion-icon>
+                            </button>
+                            bla
+                            <button ion-button icon-only round clear small>
+                                    <ion-icon name="add-circle"></ion-icon>
+                            </button> -->
+                        </p>
+                        <ion-note item-end *ngIf="true">                            
+                            <button ion-button icon-only round clear small>
+                                <ion-icon name="add-circle" [ngStyle]="{'color':'gray'}"></ion-icon>
+                            </button>
+                            <br>
+                            <button ion-button icon-only round clear small disabled>
+                                <ion-icon name="remove-circle"></ion-icon>
+                            </button>
+                        </ion-note>
+                        <ion-note item-end *ngIf="true">
+                            {{item.price | currency:'COP':'symbol-narrow':'1.0'}}<br>
+                            x{{item.nAvailable}}
                         </ion-note>
                     </ion-item>
                 </ion-list>

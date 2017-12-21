@@ -1,4 +1,5 @@
 page-home {
+    $background-color:  #fea;
     .grid-basic-page {        
         ion-col div {
             background-color: #f0f5ff;
@@ -16,5 +17,15 @@ page-home {
         div {
             background-color: white;
         }
+    }
+    .item-shoping-cart {
+        button {
+            margin: 0px;
+        }
+        /* p {
+            position: relative;
+            top: 50%;
+            transform: perspective(1px) translateY(-50%);
+        } */
     }
 }

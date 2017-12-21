@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { Api } from '../api/api';
 
 import { Item } from '../../models/item';
-import { concat } from 'rxjs/operator/concat';
 import { Observable } from 'rxjs/Observable';
 
 export interface ItemsResponse {
@@ -16,90 +14,63 @@ export interface ItemsResponse {
 @Injectable()
 export class ItemsProvider {
 
-    private activeItemResponse: ReplaySubject<any> = new ReplaySubject(1);
+    private allItemsSource: BehaviorSubject<Item[]>;
+    public currentAllItems: Observable<Item[]>;
+    //private allItems: Item[] = [];
 
     private selectedItemsSource: BehaviorSubject<Item[]>;
-    public currentSelectedItems: Observable<Item[]>
+    public currentSelectedItems: Observable<Item[]>;
+    private selectedItems: Item[];    
     
     constructor(private api: Api) {
-        console.log("ItemsProvider Constructor!");
+        this.allItemsSource = new BehaviorSubject<Item[]>([]);
+        this.currentAllItems = this.allItemsSource.asObservable();
+        //this.currentAllItems.subscribe(items => this.allItems = items);
+
         this.selectedItemsSource = new BehaviorSubject<Item[]>([]);
+        //this.selectedItemsSource = new BehaviorSubject<Item[]>([{id: 1, name: "Lapiz", nAvailable: 10, price: 100 }]);
         this.currentSelectedItems = this.selectedItemsSource.asObservable();
+        this.currentSelectedItems.subscribe(items => this.selectedItems = items);
+    }
+
+    /**
+     * Send a GET request to our items endpoint. After that, the BehaviorSubject
+     * broadcasts the received data.
+     */
+    public getAllItems() {
+        this.api.get('items').subscribe((resp) => {
+            let allItems: Item[] = [];
+            if(resp.status == 'success') {
+                let items = resp.data;
+                for(let item of items) {
+                    //console.log(JSON.stringify(item));
+                    if(this.selectedItems.findIndex(this.findItemById, [item.id]) === 0) {
+                        item.selected = true;
+                    } else {
+                        item.selected = false;
+                    }
+                    allItems.push(new Item(item));
+                }
+                //this.allItems = allItems;
+                this.changeAllItems(allItems);
+            } else {
+                console.log("Get all items bad request")
+            }
+        }, (err) => {
+            console.log("Provider: error");
+        });
     }
 
     changeSelectedItems(items: Item[]) {
         this.selectedItemsSource.next(items);
     }
 
-    /**
-     * Send a GET request to our items endpoint.
-     */
-    public getAllItems() {
-        this.api.get('items').subscribe((resp) => {
-            console.log(this.currentSelectedItems);
-            let allItems: Item[] = [];
-            if(resp.status == 'success') {
-                let items = resp.data;                
-                //console.log(resp);
-                for (let item of items) {
-                    item.selected = false;
-                    allItems.push(new Item(item));
-                }
-            } else {
-                console.log("Get all items bad request");
-            }
-            this.activeItemResponse.next(allItems);
-        }, (err) => {
-            console.log("Provider: error");
-        });
+    changeAllItems(items: Item[]) {
+        this.allItemsSource.next(items);
+    }
 
-        return this.activeItemResponse;    
-            
-            /* res => this.activeItemResponse.next(res));
-        return this.activeItemResponse; */
-
-
-
-
-
-
-        
-        /* let seq = this.api.get('items');
-        
-        seq.subscribe((resp) => {
-            if(resp.status == 'success') {
-                let items = resp.data;
-                //console.log(resp);
-                for (let item of items) {
-                    item.selected = false;
-                    this.allItems.push(new Item(item));
-                }
-                // Populate the all items in the search result.
-                this.queryItems = this.allItems;
-            } else {
-                console.log("Get all items bad request.");
-            }            
-        }, (err) => {            
-            // Unable to get all the items
-            let toast = this.toastCtrl.create({
-                message: 'error getting all the items',
-                duration: 3000,
-                position: 'top'
-            });
-            toast.present();
-        }); */
-
-   /*       seq.subscribe((res: any) => {
-            // If the API returned a successful response, mark the user as logged in
-            if(res.status == 'success') {
-                //this._loggedIn(res);
-                console.log("getAllItems success from ItemsProvider")
-            } else {}
-        }, err => {
-            console.error('ERROR', err);
-        });
-
-        return seq; */
+    private findItemById(item) {
+        return item.id === this[0];
     }
     
 }

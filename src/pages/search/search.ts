@@ -11,8 +11,8 @@ import { ItemsProvider } from '../../providers/providers';
 })
 export class SearchPage {
     
-    allItems: Item[] = [];
-    queryItems: Item[] = [];
+    allItems: Item[];
+    queryItems: Item[];
     selectedItems: Item[];
 
     constructor(public navCtrl: NavController,
@@ -22,18 +22,16 @@ export class SearchPage {
     }
 
     ionViewDidLoad() {
-        this.initializeItems();
-        this.itemsProvider.currentSelectedItems.subscribe(items => this.selectedItems = items);        
-    }
-
-    // Attempt to get all the items.
-    initializeItems() {
-        this.itemsProvider.getAllItems().subscribe((resp) => {
-            this.allItems = resp;
+        // Subscribe for changes in allItems and selectedItems
+        this.itemsProvider.currentAllItems.subscribe(items => {
+            //for(let item of items) console.log(JSON.stringify(item));
+            this.allItems = items;
             this.queryItems = this.allItems;
-        }, (err) => {
-            console.log("Component: error");
         });
+        this.itemsProvider.currentSelectedItems.subscribe(items => this.selectedItems = items);
+        
+        // Get allItems for provider
+        this.itemsProvider.getAllItems();        
     }
 
     /**
