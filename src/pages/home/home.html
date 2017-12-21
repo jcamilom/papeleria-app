@@ -53,17 +53,17 @@
                             </button> -->
                         </p>
                         <ion-note item-end *ngIf="true">                            
-                            <button ion-button icon-only round clear small>
+                            <button ion-button icon-only round clear small (click)="addItem(item)">
                                 <ion-icon name="add-circle" [ngStyle]="{'color':'gray'}"></ion-icon>
                             </button>
                             <br>
-                            <button ion-button icon-only round clear small disabled>
-                                <ion-icon name="remove-circle"></ion-icon>
+                            <button ion-button icon-only round clear small (click)="subtractItem(item)">
+                                <ion-icon name="remove-circle" [ngStyle]="{'color':'gray'}"></ion-icon>
                             </button>
                         </ion-note>
                         <ion-note item-end *ngIf="true">
-                            {{item.price | currency:'COP':'symbol-narrow':'1.0'}}<br>
-                            x{{item.nAvailable}}
+                            {{(item.price * item.nSelected) | currency:'COP':'symbol-narrow':'1.0'}}<br>
+                            x{{item.nSelected}}
                         </ion-note>
                     </ion-item>
                 </ion-list>

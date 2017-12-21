@@ -44,8 +44,10 @@ export class ItemsProvider {
                 let items = resp.data;
                 for(let item of items) {
                     //console.log(JSON.stringify(item));
-                    if(this.selectedItems.findIndex(this.findItemById, [item.id]) === 0) {
+                    let index = this.selectedItems.findIndex(this.findItemById, [item.id]);
+                    if(index >= 0) {
                         item.selected = true;
+                        item.nSelected = this.selectedItems[index].nSelected;
                     } else {
                         item.selected = false;
                     }

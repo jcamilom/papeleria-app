@@ -75,8 +75,10 @@ export class SearchPage {
     changeSelectedItems(item: Item){
         item.selected = !item.selected;
         if(item.selected) {
+            item.nSelected = 1;
             this.selectedItems.push(item);
         } else {
+            item.nSelected = 0;
             this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
         }
         this.itemsProvider.changeSelectedItems(this.selectedItems);
