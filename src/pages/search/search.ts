@@ -34,7 +34,7 @@ export class SearchPage {
         });
         
         // Get allItems for provider
-        this.itemsProvider.getAllItems();        
+        this.itemsProvider.getAllItems();
     }
 
     /**

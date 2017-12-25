@@ -56,10 +56,10 @@ export class ItemsProvider {
                 //this.allItems = allItems;
                 this.changeAllItems(allItems);
             } else {
-                console.log("Get all items bad request")
+                console.log("Get all items bad request");
             }
         }, (err) => {
-            console.log("Provider: error");
+            console.log("Items provider error");
         });
     }
 
