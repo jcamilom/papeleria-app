@@ -71,7 +71,7 @@ export class ItemsProvider {
         this.allItemsSource.next(items);
     }
 
-    private findItemById(item) {
+    public findItemById(item) {
         return item.id === this[0];
     }
     

@@ -28,7 +28,10 @@ export class SearchPage {
             this.allItems = items;
             this.queryItems = this.allItems;
         });
-        this.itemsProvider.currentSelectedItems.subscribe(items => this.selectedItems = items);
+        this.itemsProvider.currentSelectedItems.subscribe(items => {
+            this.selectedItems = items
+            this.updateQueryItems();
+        });
         
         // Get allItems for provider
         this.itemsProvider.getAllItems();        
@@ -82,6 +85,27 @@ export class SearchPage {
             this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
         }
         this.itemsProvider.changeSelectedItems(this.selectedItems);
+    }
+
+    private removeItem(item: Item, itemsArr: Item[]) {
+        itemsArr.splice(this.selectedItems.indexOf(item), 1);
+    }
+
+    private deselectItem(itemId: number) {
+        let index = this.queryItems.findIndex(this.itemsProvider.findItemById, [itemId]);
+        // "If" not necessary, but still... index could be -1.
+        if(index > -1) this.queryItems[index].selected = false;
+    }
+
+    /**
+     * When an item is removed from the shoping cart, the selectedItems are updated globally,
+     * but the queryItems doesnt (selected icon still appears).
+     */
+    private updateQueryItems() {
+        for(let queryItem of this.queryItems) {
+            let index = this.selectedItems.findIndex(this.itemsProvider.findItemById, [queryItem.id]);
+            if (index < 0) this.deselectItem(queryItem.id);
+        }
     }
 
 }
