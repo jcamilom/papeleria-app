@@ -1,3 +1,9 @@
 TODO
 search items only in home tab
 sales pagination
+<any>? in MatTableDataSource
+progress bar for paidValue?
+rethink the selectedItems logic(specially after changing sidePanel for first tab)
+
+DONE
+update sales(for tab SalesHistoric) once the tab is opened

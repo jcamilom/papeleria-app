@@ -14,6 +14,16 @@ export class Sale {
             this[f] = fields[f];
         }
     }
+
+    clearSale() {
+        this.value = 0;
+        this.paid = false;
+        this.paidValue = 0;
+        this.id = null;
+        this.createdAt = null;
+        this.updatedAt = null;
+        this.debtor = null;
+    }
   
 }
   

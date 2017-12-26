@@ -12,10 +12,14 @@ export class SalesProvider {
     private salesSource: BehaviorSubject<Sale[]>;
     public currentSales: Observable<Sale[]>; 
 
+    private updateAvailable: boolean;
+
     constructor(private api: Api) {
         //this.salesSource = new BehaviorSubject<Sale[]>([{value: 3800, paidValue: 1200, paid: false}]);
         this.salesSource = new BehaviorSubject<Sale[]>([]);
         this.currentSales = this.salesSource.asObservable();
+
+        this.updateAvailable = false;
     }
 
     /**
@@ -28,10 +32,11 @@ export class SalesProvider {
             if(resp.status == 'success') {
                 let sales = resp.data;
                 for(let sale of sales) {
-                    console.log(JSON.stringify(sale));
+                    //console.log(JSON.stringify(sale));
                     sales_arr.push(new Sale(sale));
                 }
                 this.changeSales(sales_arr);
+                this.setUpdateAvailable(false);
             } else {
                 console.log("Get sales bad request");
             }
@@ -40,8 +45,26 @@ export class SalesProvider {
         });
     }
 
+    public AddSale(sale: Sale) {
+        return this.api.post('sales', sale);
+    }
+
     public changeSales(sales: Sale[]) {
         this.salesSource.next(sales);
+    }
+
+    /**
+     * Set a flag which is used by pages before loading.
+     */
+    public setUpdateAvailable(available: boolean) {
+        this.updateAvailable = available;
+    }
+
+    /**
+     * Get the flag which is used by pages before loading.
+     */
+    public getUpdateAvailable(): boolean {
+        return this.updateAvailable;
     }
 
 }

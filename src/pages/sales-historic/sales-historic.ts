@@ -13,10 +13,8 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class SalesHistoricPage {
 
-    displayedColumns = ['id', 'createdAt', 'value', 'paid', 'paidValue', 'updatedAt', 'debtor'];
-    dataSource = new MatTableDataSource<SaleElement>(SALE_DATA);
-
-    private sales: Sale[];
+    public displayedColumns = ['id', 'createdAt', 'value', 'paid', 'paidValue', 'updatedAt', 'debtor'];
+    private dataSource: MatTableDataSource<any>;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -26,28 +24,22 @@ export class SalesHistoricPage {
     ionViewDidLoad() {
         console.log('ionViewDidLoad SalesHistoricPage');
 
+        this.dataSource = new MatTableDataSource<Sale[]>();
+
         this.salesProvider.currentSales.subscribe(sales => {
-            this.sales = sales;
+            this.dataSource.data = sales;
         });
 
         // Get all sales for provider
         this.salesProvider.getSales();
     }
 
-}
-
-export interface SaleElement {
-        id: number;
-        createdAt: string;
-        updatedAt: string;
-        value: number;
-        paid: boolean;
-        paidValue: number;
-        debtor: string;
+    ionViewWillEnter() {
+        console.log('ionViewWillEnter SalesHistoricPage');
+        if(this.salesProvider.getUpdateAvailable()) {
+            console.log('UpdateAvailable from SalesHistoricPage!');
+            this.salesProvider.getSales();
+        }
     }
-  
-  const SALE_DATA: SaleElement[] = [
-    {id: 1, createdAt: '2017-12-26T02:31:22.281Z', updatedAt: null, value: 15000, paid: true, paidValue: 15000, debtor: ' '},
-    {id: 2, createdAt: '2017-12-26T02:31:22.335Z', updatedAt: null, value: 8000, paid: false, paidValue: 1500, debtor: 'Federico'},
-    {id: 3, createdAt: '2017-12-26T02:31:22.379Z', updatedAt: '2017-12-26T02:35:22.379Z', value: 12000, paid: true, paidValue: 12000, debtor: 'Andres'},
-  ];
+
+}
