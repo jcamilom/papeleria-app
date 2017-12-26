@@ -40,8 +40,10 @@ export class SalesProvider {
             } else {
                 console.log("Get sales bad request");
             }
+        // Should generate a toast saying that there is an error with the db connection
         }, (err) => {
-            console.log("Sales provider error");
+            console.error("From salesProvider: error connecting to the database:");
+            throw(err);
         });
     }
 

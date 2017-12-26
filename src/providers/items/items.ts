@@ -58,8 +58,10 @@ export class ItemsProvider {
             } else {
                 console.log("Get all items bad request");
             }
+        // Should generate a toast saying that there is an error with the db connection
         }, (err) => {
-            console.log("Items provider error");
+            console.error("From itemsProvider: error connecting to the database:");
+            throw(err);
         });
     }
 

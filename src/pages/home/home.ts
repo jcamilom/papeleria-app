@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
 import { ItemsProvider } from '../../providers/providers';
 import { Item } from '../../models/item';
@@ -19,6 +19,7 @@ export class HomePage {
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public alertCtrl: AlertController,
+        private toastCtrl: ToastController,
         private itemsProvider: ItemsProvider,
         private salesProvider: SalesProvider) {            
     }
@@ -58,7 +59,7 @@ export class HomePage {
     }
 
     private pressEvent(item: Item) {
-        let alertConfirm = this.doConfirm();
+        let alertConfirm = this.doConfirmAlert();
         alertConfirm.present();
         alertConfirm.onDidDismiss((resp) => {
             if(resp === true) {
@@ -74,6 +75,11 @@ export class HomePage {
 
     public generateSale() {
         if(this.sale.value > 0) {
+            // Ask if debor checkbox
+            if(true) {
+                this.sale.paidValue = this.sale.value;
+                this.sale.paid = true;
+            }
             this.salesProvider.AddSale(this.sale).subscribe((resp) => {
                 if(resp.status == 'success') {
                     // Clear the sale
@@ -85,14 +91,17 @@ export class HomePage {
                     // Set a flag in salesProvider, so that first page that uses the global sales
                     // updates the global value before it opens
                     this.salesProvider.setUpdateAvailable(true);
+                    // Notify the user that the sale was successfully added
+                    this.presentToast('Venta registrada exitosamente');
                 } else {
-                    console.log("Error while creating the sale");
+                    // Notify the user that the sale couldn't be added
+                    this.presentToast('Error: la venta no pudo ser registrada');
                 }
             }, (err) => { throw(err); });
         }
     }
 
-    private doConfirm() {
+    private doConfirmAlert() {
         let alertConfirm = this.alertCtrl.create({
             title: 'Remover ítem',
             message: '¿Remover ítem del carrito de ventas?',
@@ -116,5 +125,23 @@ export class HomePage {
         
         return alertConfirm;
     }
+
+    private presentToast(msg: string, dur: number = 3000, pos: string = 'bottom') {
+        let toast = this.toastCtrl.create({
+            message: msg,
+            duration: dur,
+            position: pos,
+            closeButtonText: "cerrar",
+            showCloseButton: true,
+            cssClass: "custom-toast"
+        });
+    
+        toast.onDidDismiss(() => {
+            console.log('Dismissed toast');
+        });
+    
+        toast.present();
+    }
+    
 
 }

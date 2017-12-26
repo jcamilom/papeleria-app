@@ -1,4 +1,6 @@
 TODO
+Sort the sales by date
+toast dismiss on tap
 search items only in home tab
 sales pagination
 <any>? in MatTableDataSource
@@ -7,3 +9,4 @@ rethink the selectedItems logic(specially after changing sidePanel for first tab
 
 DONE
 update sales(for tab SalesHistoric) once the tab is opened
+FIX: after removing item from shopingcart with "-" button, the sale is not generated. S: clearSale (null id)

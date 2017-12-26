@@ -29,3 +29,29 @@ page-home {
         } */
     }
 }
+
+// The toast doesnt belong to the page
+
+ion-toast.custom-toast.toast-md {
+    .toast-wrapper.toast-bottom {
+        opacity: 0.9;
+        /* position: absolute;
+        right: 0;
+        left: 0;
+        z-index: 10;
+        display: block;
+        margin: auto; */
+        width: 40%;
+        max-width: 700px;
+        /* border-radius: 15px; */
+    }
+    .toast-message {
+        padding: 19px 16px 17px;
+        font-size: 1.5rem;
+        color: #fff;
+        /* text-align: center; */
+    }
+/*     div#toast-hdr-0 {
+        text-align: center;
+    } */
+}
