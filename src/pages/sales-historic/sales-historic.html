@@ -8,10 +8,69 @@
 
 
 <ion-content padding>
-    <ion-list>
-        <ion-item *ngFor="let sale of sales">
-            <h2>{{ sale.value }}</h2>
-        </ion-item>
-    </ion-list>
+
+    <div class="my-table-container">
+        <mat-table #table [dataSource]="dataSource">
+    
+            <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- id Column -->
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+                <mat-cell *matCellDef="let sale"> {{sale.id}} </mat-cell>
+            </ng-container>
+    
+            <!-- createdAt Column -->
+            <ng-container matColumnDef="createdAt">
+                <mat-header-cell *matHeaderCellDef> Fecha de venta </mat-header-cell>
+                <mat-cell *matCellDef="let sale"> {{sale.createdAt | date:'short'}} </mat-cell>
+                <!-- <mat-cell *matCellDef="let sale"> {{sale.createdAt | date:'yyyy-MM-dd HH:mm'}} </mat-cell> -->
+            </ng-container>
+    
+            <!-- updatedAt Column -->
+            <ng-container matColumnDef="updatedAt">
+                <mat-header-cell *matHeaderCellDef> Fecha de act. </mat-header-cell>
+                <mat-cell *matCellDef="let sale">
+                    <!-- <div *ngIf="sale.updatedAt != null"> -->
+                        {{sale.updatedAt | date:'short'}}
+                    <!--  </div> -->
+                </mat-cell>
+            </ng-container>
+    
+            <!-- value Column -->
+            <ng-container matColumnDef="value">
+                <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
+                <mat-cell *matCellDef="let sale">
+                    {{sale.value | currency:'COP':'symbol-narrow':'1.0'}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- paid Column -->
+            <ng-container matColumnDef="paid">
+                <mat-header-cell *matHeaderCellDef> Pagado </mat-header-cell>
+                <mat-cell *matCellDef="let sale">
+                    <ion-icon [name]="sale.paid ? 'checkmark' : 'close'"></ion-icon>
+                </mat-cell>
+            </ng-container>
+
+            <!-- paidValue Column -->
+            <ng-container matColumnDef="paidValue">
+                <mat-header-cell *matHeaderCellDef> Valor pagado </mat-header-cell>
+                <mat-cell *matCellDef="let sale">
+                    {{sale.paidValue | currency:'COP':'symbol-narrow':'1.0'}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- debtor Column -->
+            <ng-container matColumnDef="debtor">
+                <mat-header-cell *matHeaderCellDef> Deudor </mat-header-cell>
+                <mat-cell *matCellDef="let sale"> {{sale.debtor}} </mat-cell>
+            </ng-container>
+    
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </div>
 
 </ion-content>
