@@ -92,10 +92,10 @@ export class HomePage {
                     // updates the global value before it opens
                     this.salesProvider.setUpdateAvailable(true);
                     // Notify the user that the sale was successfully added
-                    this.msgProvider.presentToast('Venta registrada exitosamente');
+                    this.msgProvider.presentToast('Venta registrada exitosamente.');
                 } else {
                     // Notify the user that the sale couldn't be added
-                    this.msgProvider.presentToast('Error: la venta no pudo ser registrada');
+                    this.msgProvider.presentToast('Error: la venta no pudo ser registrada.', true);
                 }
             }, (err) => { throw(err); });
         }

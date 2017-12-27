@@ -76,29 +76,31 @@ export class StockPage {
                             // Update allItems (for this page and global)
                             this.itemsProvider.getAllItems();
                             // Notify the user that the item was successfully added
-                            //this.presentToast('Venta registrada exitosamente');
-                            console.log("Item added successfully");
+                            this.msgProvider.presentToast('Ítem añadido exitosamente.');
                         } else {
                             // Notify the user that the sale couldn't be added
-                            //this.presentToast('Error: la venta no pudo ser registrada');
-                            console.log("Item couldnt be added");
+                            this.msgProvider.presentToast('El ítem no pudo ser añadido.', true);
                         }
                     }, (err) => { 
-                        // Toast "No se pudo crear el item, es posible que ya exista en la base de datos"
-                        console.error("No se pudo crear el item, es posible que ya exista en la base de datos");
+                        // Error. It's possible that item already exists
+                        this.msgProvider.presentToast(
+                            "No se pudo crear el ítem. Es posible que este ítem " +
+                                "ya exista en la base de datos.", true);
                         throw(err);
                     });
                 } else {
-                    // Toast "values must be positive"
-                    console.log("Invalid numbers(-)");
+                    // Negative values
+                    this.msgProvider.presentToast(
+                        "No se pudo crear el ítem. Los valores numéricos deben ser positivos.", true);
                 }
             } else {
-                // Toast "not valid" number
-                console.log("Invalid numbers");
+                // Not valid number
+                this.msgProvider.presentToast(
+                    "No se pudo crear el ítem. Los valores numéricos ingresados no son válidos.", true);
             }
         } else {
-            // Toast "not valid" name
-            console.log("Invalid name");
+            // Not valid name
+            this.msgProvider.presentToast('El ítem no pudo ser añadido. Nombre no válido.', true);
         }        
     }
 

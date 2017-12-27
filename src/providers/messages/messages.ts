@@ -33,13 +33,15 @@ export class MessagesProvider {
         return alertConfirm;
     }
 
-    public presentToast(msg: string, dur: number = 3000, pos: string = 'bottom') {
+    public presentToast(msg: string, closeBtn: boolean = false, dur: number = 3000, pos: string = 'bottom') {
+        // If close button is showed, make the toast present until user closes it.
+        if(closeBtn == true) dur = null;
         let toast = this.toastCtrl.create({
             message: msg,
             duration: dur,
             position: pos,
             closeButtonText: "cerrar",
-            showCloseButton: true,
+            showCloseButton: closeBtn,
             cssClass: "custom-toast"
         });
     

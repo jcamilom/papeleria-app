@@ -1,5 +1,4 @@
 TODO
-toasts for item creation
 sync items STOCK
 filtering STOCK
 delete item STOCK
@@ -19,3 +18,4 @@ Sort the items by name
 create item STOCK
 create item check if name exists STOCK
 create MESSAGES provider
+toasts for item creation, with close button for error
