@@ -12,6 +12,7 @@ import { Item } from '../../models/item';
 export class StockPage {
 
     private allItems: Item[];
+    private customIncreaseValue: any = 0;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -32,7 +33,24 @@ export class StockPage {
     }
 
     public decreaseItem(item: Item) {
-        item.nAvailable--;
+        if(item.nAvailable > 0) item.nAvailable--;
+    }
+
+    public increaseItemCustomValue(item: Item) {
+        let parsedValue = parseInt(this.customIncreaseValue);
+        // Check if it's a valid value
+        if(!isNaN(parsedValue)) {
+            let newValue = item.nAvailable + parsedValue;
+            if(newValue > 0)  item.nAvailable = newValue;
+        }        
+    }
+
+    public setItemCustomValue(item: Item) {
+        let parsedValue = parseInt(this.customIncreaseValue);
+        // Check if it's a valid value
+        if(!isNaN(parsedValue)) {
+            item.nAvailable = parsedValue;
+        }
     }
 
     private sortByName(a, b) {
