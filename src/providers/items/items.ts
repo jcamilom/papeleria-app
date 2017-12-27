@@ -76,5 +76,19 @@ export class ItemsProvider {
     public findItemById(item) {
         return item.id === this[0];
     }
+
+    public sortByName(a, b) {
+        // Use toUpperCase() to ignore character casing
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+    
+        let comparison = 0;
+        if(nameA > nameB) {
+            comparison = 1;
+        } else if(nameA < nameB) {
+            comparison = -1;
+        }
+        return comparison;
+    }
     
 }

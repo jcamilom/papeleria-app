@@ -27,6 +27,7 @@ export class SalesHistoricPage {
         this.dataSource = new MatTableDataSource<Sale[]>();
 
         this.salesProvider.currentSales.subscribe(sales => {
+            sales.sort(this.salesProvider.sortByCreatedAtDesc);
             this.dataSource.data = sales;
         });
 

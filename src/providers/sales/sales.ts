@@ -33,6 +33,8 @@ export class SalesProvider {
                 let sales = resp.data;
                 for(let sale of sales) {
                     //console.log(JSON.stringify(sale));
+                    sale.createdAt = new Date(sale.createdAt);
+                    if(sale.updatedAt != null) sale.updatedAt = new Date(sale.updatedAt);
                     sales_arr.push(new Sale(sale));
                 }
                 this.changeSales(sales_arr);
@@ -67,6 +69,19 @@ export class SalesProvider {
      */
     public getUpdateAvailable(): boolean {
         return this.updateAvailable;
+    }
+
+    public sortByCreatedAtDesc(a, b) {
+        const dateA = a.createdAt;
+        const dateB = b.createdAt;
+    
+        let comparison = 0;
+        if(dateA > dateB) {
+            comparison = -1;
+        } else if(dateA < dateB) {
+            comparison = 1;
+        }
+        return comparison;
     }
 
 }
