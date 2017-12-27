@@ -1,7 +1,7 @@
 export class Item {
 
   name: string;
-  id: number;
+  id?: number;
   nAvailable: number;
   price: number;
   selected?: boolean;

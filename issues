@@ -1,9 +1,12 @@
 TODO
-toast dismiss on tap
-create item STOCK
+toasts for item creation
 sync items STOCK
+filtering STOCK
+delete item STOCK
+sales if today, dont print day
 search items only in home tab
 sales pagination
+toast dismiss on tap
 <any>? in MatTableDataSource
 progress bar for paidValue?
 rethink the selectedItems logic(specially after changing sidePanel for first tab)
@@ -13,3 +16,5 @@ update sales(for tab SalesHistoric) once the tab is opened
 FIX: after removing item from shopingcart with "-" button, the sale is not generated. S: clearSale (null id)
 Sort the sales by date
 Sort the items by name
+create item STOCK
+create item check if name exists STOCK

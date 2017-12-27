@@ -75,7 +75,7 @@ export class HomePage {
 
     public generateSale() {
         if(this.sale.value > 0) {
-            // Ask if debor checkbox
+            // Ask if debtor checkbox
             if(true) {
                 this.sale.paidValue = this.sale.value;
                 this.sale.paid = true;

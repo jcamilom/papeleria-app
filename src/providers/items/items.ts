@@ -73,6 +73,10 @@ export class ItemsProvider {
         this.allItemsSource.next(items);
     }
 
+    public AddItem(item: Item) {
+        return this.api.post('items', item);
+    }
+
     public findItemById(item) {
         return item.id === this[0];
     }
