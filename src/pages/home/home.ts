@@ -48,7 +48,7 @@ export class HomePage {
         }
     }
 
-    public subtractItem(item: Item) {
+    public decreaseItem(item: Item) {
         if(item.nSelected > 1) {
             item.nSelected--;
             this.findSaleValue();
