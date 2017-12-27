@@ -18,3 +18,4 @@ Sort the sales by date
 Sort the items by name
 create item STOCK
 create item check if name exists STOCK
+create MESSAGES provider

@@ -15,6 +15,7 @@ import { User } from '../providers/providers';
 import { Api } from '../providers/providers';
 import { MyApp } from './app.component';
 import { SalesProvider } from '../providers/providers';
+import { MessagesProvider } from '../providers/messages/messages';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -62,6 +63,7 @@ export function provideSettings(storage: Storage) {
     Api,
     ItemsProvider,
     SalesProvider,
+    MessagesProvider,
     User,
     Camera,
     SplashScreen,
