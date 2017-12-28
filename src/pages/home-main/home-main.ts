@@ -17,6 +17,8 @@ export class HomeMainPage {
     private selectedItems: Item[] = [];
     private itemToRemove: Item;
     private sale: Sale = new Sale({value: 0, paid: false, paidValue: 0});
+    private count: number;
+    private nItemsToSale: number;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -27,6 +29,11 @@ export class HomeMainPage {
 
     ionViewDidLoad() {
         //console.log('ionViewDidLoad HomeMainPage');
+
+        // Variable to count the items that has been updated succesfully
+        this.count = 0;
+        this.nItemsToSale = 0;
+
         this.itemsProvider.currentSelectedItems.subscribe(items => {
             this.selectedItems = items;
             this.findSaleValue();
@@ -84,6 +91,9 @@ export class HomeMainPage {
                 this.sale.paidValue = this.sale.value;
                 this.sale.paid = true;
             }
+            // Update the stock
+            this.updateStock();
+            // Add the sale to the database
             this.salesProvider.AddSale(this.sale).subscribe((resp) => {
                 if(resp.status == 'success') {
                     // Clear the sale
@@ -102,6 +112,49 @@ export class HomeMainPage {
                     this.msgProvider.presentToast('Error: la venta no pudo ser registrada.', true);
                 }
             }, (err) => { throw(err); });
+        }
+    }
+
+    /**
+     * Used to update the items (nAvailable) in the DB before generating the sale
+     */
+    private updateStock() {
+        // Generate the elements to send
+        let itemsToSale: any[] = [];
+        for(let itemToSale of this.selectedItems) {
+            let obj = {nAvailable: itemToSale.nAvailable - itemToSale.nSelected};
+            itemsToSale.push({id: itemToSale.id, body: obj});
+        }
+        this.nItemsToSale = itemsToSale.length;
+        // Send the elements
+        for(let itemToSale of itemsToSale) {
+            this.itemsProvider.updateItem(itemToSale).subscribe((resp) => {
+                if(resp.status == 'success') {
+                    // Update allItems (for this page and global)
+                    //this.itemsProvider.getAllItems();
+                    // Notify the user that the item was successfully added
+                    //this.msgProvider.presentToast('Ítem añadido exitosamente.');
+                    console.log(resp.data[0].id + " sold!");
+                    console.log(resp.data[0]);
+                    this.count++;
+                    if(this.count == this.nItemsToSale) {
+                        this.count = 0;
+                        console.log("All the sold items have been updated successfully");
+                        // Update the items globally
+                        this.itemsProvider.getAllItems();
+                    }
+                } else {
+                    // Notify the user that the sale couldn't be added
+                    //this.msgProvider.presentToast('El ítem no pudo ser añadido.', true);
+                    console.log("The item couldnt be sold");
+                }
+            }, (err) => { 
+                // Error. It's possible that item already exists
+                /* this.msgProvider.presentToast(
+                    `No se pudo crear el ítem. Es posible que este ítem
+                        ya exista en la base de datos.`, true); */
+                throw(err);
+            });
         }
     }
 
