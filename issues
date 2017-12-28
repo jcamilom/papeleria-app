@@ -19,3 +19,4 @@ create MESSAGES provider
 toasts for item creation, with close button for error
 basic sync items STOCK
 search items only in home tab
+allItems sortByName in the getAllItems request

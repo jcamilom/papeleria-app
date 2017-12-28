@@ -44,6 +44,8 @@ export class ItemsProvider {
             let allItems: Item[] = [];
             if(resp.status == 'success') {
                 let items = resp.data;
+                // Sort by name
+                items.sort(this.sortByName);
                 for(let item of items) {
                     //console.log(JSON.stringify(item));
                     let index = this.selectedItems.findIndex(this.findItemById, [item.id]);

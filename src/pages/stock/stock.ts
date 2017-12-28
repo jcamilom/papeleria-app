@@ -26,7 +26,7 @@ export class StockPage {
         console.log('ionViewDidLoad StockPage');
         this.itemsProvider.currentAllItems.subscribe(items => {
             // Sort by name before setting the data
-            items.sort(this.itemsProvider.sortByName);
+            //items.sort(this.itemsProvider.sortByName);
             this.allItems = items;
         });
 
