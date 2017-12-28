@@ -1,3 +1,6 @@
 page-search {
-
+    /* Fixes the padding at the bottom of the content for a tab */
+    .content .fixed-content, .content .scroll-content{
+        margin-bottom: 0px !important;
+    }
 }
