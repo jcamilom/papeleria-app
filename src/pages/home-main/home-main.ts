@@ -7,6 +7,9 @@ import { SalesProvider } from '../../providers/providers';
 import { Sale } from '../../models/sale';
 import { MessagesProvider } from '../../providers/providers';
 
+const removeItemTitle: string = 'Remover ítem';
+const removeItemMessage: string = '¿Remover ítem del carrito de ventas?';
+
 @IonicPage()
 @Component({
     selector: 'page-home-main',
@@ -71,7 +74,7 @@ export class HomeMainPage {
         // Tag the item to remove
         this.itemToRemove = item;
         // Show confirmation alert
-        this.msgProvider.showConfirmAlert(this.removeItemHandler);
+        this.msgProvider.showConfirmAlert(this.removeItemHandler, removeItemTitle, removeItemMessage);
     }
 
     public removeItemHandler = () => {

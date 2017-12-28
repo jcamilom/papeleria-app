@@ -11,9 +11,11 @@ import { ItemsProvider } from '../../providers/providers';
 })
 export class SearchPage {
     
-    allItems: Item[];
-    queryItems: Item[];
-    selectedItems: Item[];
+    private allItems: Item[];
+    private queryItems: Item[];
+    private selectedItems: Item[];
+
+    private searchQuery: string = '';
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -27,6 +29,8 @@ export class SearchPage {
             //for(let item of items) console.log(JSON.stringify(item));
             this.allItems = items;
             this.queryItems = this.allItems;
+            // Filter the query items (First time the '' show all the items)
+            this.filterItems();
         });
         this.itemsProvider.currentSelectedItems.subscribe(items => {
             this.selectedItems = items
@@ -40,15 +44,18 @@ export class SearchPage {
     /**
      * Perform a service for the proper items.
      */
-    getItems(ev) {
-        let val = ev.target.value;
+    // P template
+    public filterItems(ev?: any) {
+        // If not true, recover last query (called from ionViewWillEnter)
+        if(ev) this.searchQuery = ev.target.value;
+        
         // When the query is empty, restore the list of items.
-        if (!val || !val.trim()) {
+        if (!this.searchQuery || !this.searchQuery.trim()) {
             this.queryItems = this.allItems;
             return;
         }
         // If not, query the items.
-        this.queryItems = this.query({name: val});
+        this.queryItems = this.query({name: this.searchQuery});
     }
 
     /**
@@ -60,7 +67,7 @@ export class SearchPage {
         });
     }
 
-    // For performance(?), the quey is made on items already obtained, not on the database.
+    // For performance(?), the query is made on items already obtained, not on the database.
     query(params?: any) {
         return this.allItems.filter((item) => {
             for (let key in params) {

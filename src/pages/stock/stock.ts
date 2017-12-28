@@ -5,6 +5,9 @@ import { ItemsProvider } from '../../providers/providers';
 import { Item } from '../../models/item';
 import { MessagesProvider } from '../../providers/providers';
 
+const removeItemTitle: string = 'Eliminar ítem';
+const removeItemMessage: string = '¿Eliminar ítem del inventario? Esta acción no se puede deshacer.';
+
 @IonicPage()
 @Component({
     selector: 'page-stock',
@@ -15,6 +18,10 @@ export class StockPage {
     private allItems: Item[];
     private customIncreaseValue: any = 0;
     private updatedItems: any;
+    private itemToRemove: Item;
+
+    private searchQuery: string = '';
+    private queryItems: Item[];
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -28,6 +35,10 @@ export class StockPage {
             // Sort by name before setting the data
             //items.sort(this.itemsProvider.sortByName);
             this.allItems = items;
+            // Initialize / Update the query items when global items where updated
+            this.queryItems = this.allItems;
+            // Filter the query items (First time the '' show all the items)
+            this.filterItems();
         });
 
         // Initialize the updatedItems array
@@ -91,6 +102,68 @@ export class StockPage {
             this.updatedItems.push({id: item.id, body: obj});
         }
         //console.log(this.updatedItems);
+    }
+
+    // P template
+    public filterItems(ev?: any) {
+        // If not true, recover last query (called from ionViewWillEnter)
+        if(ev) this.searchQuery = ev.target.value;
+        
+        // When the query is empty, restore the list of items.
+        if (!this.searchQuery || !this.searchQuery.trim()) {
+            this.queryItems = this.allItems;
+            return;
+        }
+        // If not, query the items.
+        this.queryItems = this.query({name: this.searchQuery});
+    }
+
+    // For performance(?), the query is made on items already obtained, not on the database.
+    query(params?: any) {
+        return this.allItems.filter((item) => {
+            for (let key in params) {
+                let field = item[key];
+                if (typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0) {
+                    return item;
+                } else if (field == params[key]) {
+                    return item;
+                }
+            }
+            return null;
+        });
+    }
+
+    // P template
+    public removeItemEvent(item: Item) {
+        // Tag the item to remove
+        this.itemToRemove = item;
+        // Show confirmation alert
+        this.msgProvider.showConfirmAlert(this.removeItemHandler, removeItemTitle, removeItemMessage);
+    }
+
+    public removeItemHandler = () => {
+        this.removeItem(this.itemToRemove);
+    }
+
+    public removeItem(item: Item) {
+        this.itemsProvider.deleteItem(item).subscribe((resp) => {
+            if(resp.status == 'success') {
+                // Remove item from updatedItemsArray if present
+                // Look if the item already exist in the updatedItems array
+                let index = this.updatedItems.findIndex(this.itemsProvider.findItemById, [resp.data[0].id]);
+                // The item already exists -> remove it
+                if(index > -1) this.updatedItems.splice(index, 1);
+                console.log(resp.data[0].id + " deleted!");
+                this.itemToRemove = null;
+                // Update the allItems globally
+                this.itemsProvider.getAllItems();
+            } else {
+                console.log("The item couldnt be deleted")
+            }
+        }, (err) => {
+            console.log("The item couldnt be deleted")
+            throw(err);
+        });
     }
 
     private syncUpdatedItems() {

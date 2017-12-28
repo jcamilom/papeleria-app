@@ -85,6 +85,10 @@ export class ItemsProvider {
         return this.api.put(this.itemsEndpoint + "/" + item.id, item.body);
     }
 
+    public deleteItem(item: Item) {
+        return this.api.delete(this.itemsEndpoint + "/" + item.id);
+    }
+
     public findItemById(item) {
         return item.id === this[0];
     }

@@ -8,10 +8,10 @@ export class MessagesProvider {
         //console.log('Hello MessagesProvider Provider');
     }
 
-    public showConfirmAlert(agreeHandler: () => any) {
+    public showConfirmAlert(agreeHandler: () => any, title: string, message: string) {
         let alertConfirm = this.alertCtrl.create({
-            title: 'Remover ítem',
-            message: '¿Remover ítem del carrito de ventas?',
+            title: title,
+            message: message,
             buttons: [
                 {
                     text: 'Cancelar',

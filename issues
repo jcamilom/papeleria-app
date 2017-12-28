@@ -1,9 +1,9 @@
 TODO
-filtering STOCK
-delete item STOCK
+IMP query filter in itemsProvider
+IMP search by id
+CASE select items to sell, modify stock, sell items???
 sales if today, dont print day
 sales pagination
-toast dismiss on tap
 <any>? in MatTableDataSource
 progress bar for paidValue?
 rethink the selectedItems logic(specially after changing sidePanel for first tab)
@@ -21,3 +21,8 @@ basic sync items STOCK
 search items only in home tab
 allItems sortByName in the getAllItems request
 FIX update the item after selling it
+filtering STOCK
+FIX after selling, stock doesnt get updated
+after selling, queryItems is restored
+delete item STOCK
+FIX STOCK modify item, then delete it -> update of deleted item fails
