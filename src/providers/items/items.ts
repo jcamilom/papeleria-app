@@ -14,6 +14,8 @@ export interface ItemsResponse {
 @Injectable()
 export class ItemsProvider {
 
+    private itemsEndpoint: string = 'items';
+
     private allItemsSource: BehaviorSubject<Item[]>;
     public currentAllItems: Observable<Item[]>;
     //private allItems: Item[] = [];
@@ -38,7 +40,7 @@ export class ItemsProvider {
      * broadcasts the received data.
      */
     public getAllItems() {
-        this.api.get('items').subscribe((resp) => {
+        this.api.get(this.itemsEndpoint).subscribe((resp) => {
             let allItems: Item[] = [];
             if(resp.status == 'success') {
                 let items = resp.data;
@@ -73,8 +75,12 @@ export class ItemsProvider {
         this.allItemsSource.next(items);
     }
 
-    public AddItem(item: Item) {
-        return this.api.post('items', item);
+    public addItem(item: Item) {
+        return this.api.post(this.itemsEndpoint, item);
+    }
+
+    public updateItem(item) {
+        return this.api.put(this.itemsEndpoint + "/" + item.id, item.body);
     }
 
     public findItemById(item) {

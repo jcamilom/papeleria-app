@@ -14,6 +14,7 @@ export class StockPage {
 
     private allItems: Item[];
     private customIncreaseValue: any = 0;
+    private updatedItems: any;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -28,14 +29,31 @@ export class StockPage {
             items.sort(this.itemsProvider.sortByName);
             this.allItems = items;
         });
+
+        // Initialize the updatedItems array
+        this.updatedItems = [];
+    }
+
+    ionViewWillLeave() {
+        console.log("Updating all items globally");
+        this.itemsProvider.changeAllItems(this.allItems);
+
+        // Update the modified items and clears the updatedItems array
+        this.syncUpdatedItems();
     }
 
     public increaseItem(item: Item) {
         item.nAvailable++;
+        // Push the item's modified value to the updatedItems array
+        this.pushUpdatedItem(item, 'nAvailable');
     }
 
     public decreaseItem(item: Item) {
-        if(item.nAvailable > 0) item.nAvailable--;
+        if(item.nAvailable > 0) {
+            item.nAvailable--;
+            // Push the item's modified value to the updatedItems array
+            this.pushUpdatedItem(item, 'nAvailable');
+        }
     }
 
     public increaseItemCustomValue(item: Item) {
@@ -44,6 +62,8 @@ export class StockPage {
         if(!isNaN(parsedValue)) {
             let newValue = item.nAvailable + parsedValue;
             if(newValue > 0)  item.nAvailable = newValue;
+            // Push the item's modified value to the updatedItems array
+            this.pushUpdatedItem(item, 'nAvailable');
         }
     }
 
@@ -52,7 +72,51 @@ export class StockPage {
         // Check if it's a valid value
         if(!isNaN(parsedValue)) {
             item.nAvailable = parsedValue;
+            // Push the item's modified value to the updatedItems array
+            this.pushUpdatedItem(item, 'nAvailable');
         }
+    }
+
+    private pushUpdatedItem(item: Item, key: string) {
+        // Look if the item already exist in the updatedItems array
+        let index = this.updatedItems.findIndex(this.itemsProvider.findItemById, [item.id]);
+        // The item already exists -> set new value
+        if(index > -1) {
+            this.updatedItems[index].body[key] = item[key];
+        }
+        // The item doesn't exists -> create it
+        else {
+            let obj = { };
+            obj[key] = item[key];
+            this.updatedItems.push({id: item.id, body: obj});
+        }
+        //console.log(this.updatedItems);
+    }
+
+    private syncUpdatedItems() {
+        for(let item of this.updatedItems) {
+            this.itemsProvider.updateItem(item).subscribe((resp) => {
+                if(resp.status == 'success') {
+                    // Update allItems (for this page and global)
+                    //this.itemsProvider.getAllItems();
+                    // Notify the user that the item was successfully added
+                    //this.msgProvider.presentToast('Ítem añadido exitosamente.');
+                    console.log(resp.data[0].id + " updated!");
+                } else {
+                    // Notify the user that the sale couldn't be added
+                    //this.msgProvider.presentToast('El ítem no pudo ser añadido.', true);
+                    console.log("The item couldnt be updated");
+                }
+            }, (err) => { 
+                // Error. It's possible that item already exists
+                /* this.msgProvider.presentToast(
+                    `No se pudo crear el ítem. Es posible que este ítem
+                        ya exista en la base de datos.`, true); */
+                throw(err);
+            });
+        }
+        // Clear the updatedItemsId array
+        this.updatedItems = [];
     }
     
     private createItem() {
@@ -71,7 +135,7 @@ export class StockPage {
                 if(parsedPrice >= 0 && parsedNAvailable >= 0) {
                     let item: Item = {name: trimedName, price: parsedPrice, nAvailable: parsedNAvailable};
                     // Post the new item
-                    this.itemsProvider.AddItem(item).subscribe((resp) => {
+                    this.itemsProvider.addItem(item).subscribe((resp) => {
                         if(resp.status == 'success') {
                             // Update allItems (for this page and global)
                             this.itemsProvider.getAllItems();
@@ -84,8 +148,8 @@ export class StockPage {
                     }, (err) => { 
                         // Error. It's possible that item already exists
                         this.msgProvider.presentToast(
-                            "No se pudo crear el ítem. Es posible que este ítem " +
-                                "ya exista en la base de datos.", true);
+                            `No se pudo crear el ítem. Es posible que este ítem
+                                ya exista en la base de datos.`, true);
                         throw(err);
                     });
                 } else {
@@ -101,7 +165,7 @@ export class StockPage {
         } else {
             // Not valid name
             this.msgProvider.presentToast('El ítem no pudo ser añadido. Nombre no válido.', true);
-        }        
+        }
     }
 
 }
