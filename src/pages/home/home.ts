@@ -15,6 +15,7 @@ import { MessagesProvider } from '../../providers/providers';
 export class HomePage {
 
     private selectedItems: Item[] = [];
+    private itemToRemove: Item;
     private sale: Sale = new Sale({value: 0, paid: false, paidValue: 0});
 
     constructor(public navCtrl: NavController,
@@ -59,14 +60,16 @@ export class HomePage {
     }
 
     private pressEvent(item: Item) {
-        let alertConfirm = this.msgProvider.showConfirmAlert();
-        alertConfirm.present();
-        alertConfirm.onDidDismiss((resp) => {
-            if(resp === true) {
-                this.removeItem(item);
-                this.itemsProvider.changeSelectedItems(this.selectedItems);
-            }
-        });
+        // Tag the item to remove
+        this.itemToRemove = item;
+        // Show confirmation alert
+        this.msgProvider.showConfirmAlert(this.removeItemHandler);
+    }
+
+    public removeItemHandler = () => {
+        this.removeItem(this.itemToRemove);
+        this.itemToRemove = null;
+        this.itemsProvider.changeSelectedItems(this.selectedItems);
     }
 
     public removeItem(item: Item) {

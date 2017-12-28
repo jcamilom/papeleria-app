@@ -8,7 +8,7 @@ export class MessagesProvider {
         //console.log('Hello MessagesProvider Provider');
     }
 
-    public showConfirmAlert() {
+    public showConfirmAlert(agreeHandler: () => any) {
         let alertConfirm = this.alertCtrl.create({
             title: 'Remover ítem',
             message: '¿Remover ítem del carrito de ventas?',
@@ -16,21 +16,17 @@ export class MessagesProvider {
                 {
                     text: 'Cancelar',
                     handler: () => {
-                        alertConfirm.dismiss(false);
-                        return false;
+                        console.log('Cancel clicked');
                     }
                 },
                 {
                     text: 'Aceptar',
-                    handler: () => {
-                        alertConfirm.dismiss(true);
-                        return false;
-                    }
+                    handler: agreeHandler
                 }
             ]
         });
         
-        return alertConfirm;
+        alertConfirm.present();
     }
 
     public presentToast(msg: string, closeBtn: boolean = false, dur: number = 3000, pos: string = 'bottom') {
