@@ -1,0 +1,57 @@
+page-home-main {
+    $background-color:  #fea;
+    .grid-basic-page {        
+        ion-col div {
+            background-color: #f0f5ff;
+            border: 1px solid #e6e9ee;
+            border-radius: 2px;
+            padding: 5px;
+            text-align: center;
+        }        
+        p {
+            padding: 10px 0 0 10px !important;
+            margin: 0;
+        }        
+    }
+    .toolb {
+        div {
+            background-color: white;
+        }
+    }
+    .item-shoping-cart {
+        button {
+            margin: 0px;
+        }
+        /* p {
+            position: relative;
+            top: 50%;
+            transform: perspective(1px) translateY(-50%);
+        } */
+    }
+}
+
+// The toast doesnt belong to the page
+
+ion-toast.custom-toast.toast-md {
+    .toast-wrapper.toast-bottom {
+        opacity: 0.9;
+        /* position: absolute;
+        right: 0;
+        left: 0;
+        z-index: 10;
+        display: block;
+        margin: auto; */
+        width: 40%;
+        max-width: 700px;
+        /* border-radius: 15px; */
+    }
+    .toast-message {
+        padding: 19px 16px 17px;
+        font-size: 1.5rem;
+        color: #fff;
+        /* text-align: center; */
+    }
+/*     div#toast-hdr-0 {
+        text-align: center;
+    } */
+}

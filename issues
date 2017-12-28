@@ -1,9 +1,7 @@
 TODO
-sync items STOCK
 filtering STOCK
 delete item STOCK
 sales if today, dont print day
-search items only in home tab
 sales pagination
 toast dismiss on tap
 <any>? in MatTableDataSource
@@ -19,3 +17,5 @@ create item STOCK
 create item check if name exists STOCK
 create MESSAGES provider
 toasts for item creation, with close button for error
+basic sync items STOCK
+search items only in home tab
