@@ -19,6 +19,7 @@ export class StockPage {
     private customIncreaseValue: any = 0;
     private updatedItems: any;
     private itemToRemove: Item;
+    private itemToModify: Item;
 
     private searchQuery: string = '';
     private queryItems: Item[];
@@ -46,11 +47,15 @@ export class StockPage {
     }
 
     ionViewWillLeave() {
-        console.log("Updating all items globally");
-        this.itemsProvider.changeAllItems(this.allItems);
-
-        // Update the modified items and clears the updatedItems array
-        this.syncUpdatedItems();
+        // Check if there is anything to update
+        if(this.updatedItems.length > 0) {
+            console.log("Updating allItems globally");
+            this.itemsProvider.changeAllItems(this.allItems);
+    
+            // Update the modified items and clears the updatedItems array
+            console.log("Pushing changes to the DB");
+            this.syncUpdatedItems();
+        }
     }
 
     public increaseItem(item: Item) {
@@ -193,10 +198,10 @@ export class StockPage {
     }
     
     private createItem() {
-        this.msgProvider.showCreateItemPrompt(this.createItemHander);
+        this.msgProvider.showCreateItemPrompt(this.createItemHandler);
     }
 
-    public createItemHander = (data: any) : void => {
+    public createItemHandler = (data: any) : void => {
         let trimedName: string = data.name.trim();
         // Check if the name is not an empty string
         if(trimedName != '') {
@@ -239,6 +244,55 @@ export class StockPage {
             // Not valid name
             this.msgProvider.presentToast('El ítem no pudo ser añadido. Nombre no válido.', true);
         }
+    }
+
+    public modifyItem(item: Item) {
+        this.itemToModify = item;
+        this.msgProvider.showModifyItemPrompt(this.modifyItemHandler, item);
+    }
+
+    public modifyItemHandler = (data: any) : void => {
+        let trimedName: string = data.name.trim();
+        // Check if any value was typed
+        if(trimedName != '' || data.price != '' || data.nAvailable != '') {
+            // Variable to control the update if there was any invalid value
+            let update = true;
+            // Variable to store the updated values
+            let obj: any = { };
+        
+            // Check if the name is not an empty string -> tag to update
+            if(trimedName != '') obj.name = trimedName;
+
+            // Check if the user type a new price
+            if(data.price != '') {
+                let parsedPrice = parseInt(data.price);
+                if(!isNaN(parsedPrice) && parsedPrice >= 0) obj.price = parsedPrice;
+                else update = false;
+            }
+
+            // Check if the user type a new nAvailable
+            if(data.nAvailable != '') {
+                let parsedNAvailable: number = parseInt(data.nAvailable);
+                if(!isNaN(parsedNAvailable) && parsedNAvailable >= 0) obj.nAvailable = parsedNAvailable;
+                else update = false;
+            }
+
+            if(update) {
+                for(let keyToUpdate in obj) {
+                    // Update the item for this page
+                    this.itemToModify[keyToUpdate] = obj[keyToUpdate];
+                    // Push the item's modified value to the updatedItems array
+                    this.pushUpdatedItem(this.itemToModify, keyToUpdate);
+                }
+            } else {
+                // Do not update a shit. Say there is an invalid value
+            }
+
+        } else {
+            // Do not update a shit. Say nothing
+        }
+
+        this.itemToModify = null;
     }
 
 }

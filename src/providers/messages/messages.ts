@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AlertController, ToastController } from 'ionic-angular';
 
+import { Item } from '../../models/item';
+
 @Injectable()
 export class MessagesProvider {
 
@@ -79,6 +81,43 @@ export class MessagesProvider {
                 {
                     text: 'Crear',
                     handler: createItemHander
+                }
+            ]
+        });
+        prompt.present();
+    }
+
+    public showModifyItemPrompt(agreeHandler: (data: any) => any, item: Item): void {
+        let prompt = this.alertCtrl.create({
+            title: 'Modificar ítem',
+            subTitle: item.name,
+            inputs: [
+                {
+                    name: 'name',
+                    placeholder: item.name,
+                    type: 'text'
+                },
+                {
+                    name: 'price',
+                    placeholder: '$' + item.price,
+                    type: 'number',
+                    min: 0
+                },
+                {
+                    name: 'nAvailable',
+                    placeholder: item.nAvailable.toString(),
+                    type: 'number',
+                    min: 0
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
+                {
+                    text: 'Aceptar',
+                    handler: agreeHandler
                 }
             ]
         });

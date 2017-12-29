@@ -21,7 +21,7 @@
     <ion-list>
         <ion-grid>
             <ion-row>
-                <ion-col col-6>
+                <ion-col col-5>
                     <ion-searchbar
                         (ionInput)="filterItems($event)"
                         placeholder="Buscar items por nombre, id...">
@@ -31,12 +31,13 @@
                 <ion-col></ion-col>
                 <ion-col></ion-col>
                 <ion-col></ion-col>
-                <ion-col>
+                <ion-col></ion-col>
+                <ion-col col-2>
                     <ion-item>
-                        <ion-input type="number" placeholder="Valor" [(ngModel)]="customIncreaseValue"></ion-input>
+                        <ion-label>Valor</ion-label>
+                        <ion-input type="number" [(ngModel)]="customIncreaseValue"></ion-input>
                     </ion-item>
                 </ion-col>
-                <ion-col></ion-col>
             </ion-row>
 
             <ion-item *ngFor="let item of queryItems">
@@ -47,6 +48,11 @@
                     <ion-col>
                         <button ion-button icon-only color="danger" full (click)="removeItemEvent(item)">
                             <ion-icon name="trash"></ion-icon>
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button icon-only outline (click)="modifyItem(item)">
+                            <ion-icon name="create"></ion-icon>
                         </button>
                     </ion-col>
                     <ion-col>

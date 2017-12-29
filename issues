@@ -1,6 +1,7 @@
 TODO
 IMP query filter in itemsProvider
 IMP search by id
+DEV debtors tab
 CASE select items to sell, modify stock, sell items???
 sales if today, dont print day
 sales pagination
@@ -26,3 +27,4 @@ FIX after selling, stock doesnt get updated
 after selling, queryItems is restored
 delete item STOCK.
 FIX STOCK modify item, then delete it -> update of deleted item fails
+DEV STOCK modify whole item
