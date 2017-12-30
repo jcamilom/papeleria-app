@@ -1,14 +1,14 @@
 {
     "name": "papeleria-app",
     "version": "0.0.1",
-    "homepage": "http://ionicframework.com/",
+    "homepage": "https://github.com/jcamilom",
     "private": true,
     "author": {
         "name": "Camilo Muñoz",
         "email": "jcamilomunozz@gmail.comm",
         "url": "https://github.com/jcamilom"
     },
-    "description": "ionic framework based electron project",
+    "description": "Software para manejo de contabilidad e inventario en papelería",
     "main": "electron/electron.js",
     "config": {
         "ionic_bundler": "webpack",

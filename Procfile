@@ -1,2 +1,2 @@
-ionic: ionic serve --no-open --local
+ionic: npm start
 electron: node electron-wait-ionic.js
