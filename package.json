@@ -16,18 +16,31 @@
     },
     "build": {
         "appId": "com.xingke.papeleria-app",
+        "productName": "Papeleria App",
+        "copyright": "Copyright © 2017 Camilo Muñoz",
         "electronVersion": "1.7.9",
         "asar": false,
         "files": [
             "www/**/*",
             "electron/*"
-        ]
+        ],
+        "win": {
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ],
+            "icon": "www/src/assets/icons/win/icon.ico"
+        }
     },
     "scripts": {
         "dev": "nf start",
         "start": "ionic-app-scripts serve",
         "electron dist": "electron .",
-        "ebuild": "npm run build && node_modules/.bin/build",
+        "ebuild": "npm run build && build",
         "clean": "ionic-app-scripts clean",
         "build": "ionic-app-scripts build",
         "lint": "ionic-app-scripts lint",
