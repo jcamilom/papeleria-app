@@ -33,7 +33,7 @@
                     ]
                 }
             ],
-            "icon": "www/src/assets/icons/win/icon.ico"
+            "icon": "www/assets/icons/win/icon.ico"
         }
     },
     "scripts": {
