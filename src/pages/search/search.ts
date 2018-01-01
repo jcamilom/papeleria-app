@@ -48,11 +48,24 @@ export class SearchPage {
     public filterItems(ev?: any) {
         // If not true, recover last query (called from ionViewWillEnter)
         if(ev) this.searchQuery = ev.target.value;
+
+        let parsedValue = parseInt(this.searchQuery);
         
         // When the query is empty, restore the list of items.
         if (!this.searchQuery || !this.searchQuery.trim()) {
             this.queryItems = this.allItems;
             return;
+        }
+        // If not, check if it's an ID.
+        else if(!isNaN(parsedValue)) {
+            console.log("It's a number");
+            let index = this.allItems.findIndex(this.itemsProvider.findItemById, [parsedValue]);
+            // "If" not necessary, but still... index could be -1.
+            console.log("Index: " + index);
+            if(index > -1) {
+                this.queryItems = [this.allItems[index]];
+                return;
+            }            
         }
         // If not, query the items.
         this.queryItems = this.query({name: this.searchQuery});
