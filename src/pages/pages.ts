@@ -9,7 +9,6 @@ export const RootPage = 'TabsPage';
 export const Tab1Root = 'HomePage';
 export const Tab2Root = 'SalesHistoricPage';
 export const Tab3Root = 'StockPage';
-export const Tab4Root = 'SettingsPage';
 
 export const HomeMain = 'HomeMainPage';
 export const HomeSide = 'SearchPage';
