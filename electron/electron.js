@@ -17,10 +17,12 @@ function createWindow() {
         icon: path.join(__dirname, '/../www/assets/icons/png/128x128.png')
     });
 
-    var url = process.env.E_URL || url.format({
-        pathname: path.join(__dirname, '/../www/index.html'),
-        protocol: 'file:',
-        slashes: true
+    var url = 'file://' + __dirname + '/../www/index.html';
+    var Args = process.argv.slice(2);
+    Args.forEach(function (val) {
+        if (val === "test") {
+            url = 'http://localhost:8100'
+        }
     });
 
     // and load the index.html of the app.
