@@ -24,6 +24,7 @@ export class HomeMainPage {
     private nItemsToSale: number;
     private credit: boolean = false;
     private debtorName: string = '';
+    private paidValue: number = 0;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -99,17 +100,21 @@ export class HomeMainPage {
             // Ask if debtor checkbox
             let debtor = this.debtorName.trim();
             if(this.credit && debtor != '') {
-                // Use an inputd for paidValue, default to 0
-                this.sale.paidValue = 0;
-                this.sale.paid = false;
                 this.sale.debtor = debtor;
+                this.sale.paid = (this.paidValue >= this.sale.value) ? true : false;
+                // If abono is bigger than sale value...
+                if(this.paidValue > this.sale.value) this.paidValue = this.sale.value;
+                this.sale.paidValue = (this.paidValue >= 0) ? this.paidValue : 0;                
             } else {
                 this.sale.paidValue = this.sale.value;
                 this.sale.paid = true;
             }
-            // Restore the checkbox and input
+            
+            // Restore the checkbox and inputs
             this.credit = false;
             this.debtorName = '';
+            this.paidValue = 0;
+
             // Update the stock
             this.updateStock();
             // Add the sale to the database

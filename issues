@@ -1,4 +1,5 @@
 TODO
+dbClick for item in shopingcart
 IMP query filter in itemsProvider
 DEV debtors tab
 CASE select items to sell, modify stock, sell items???
@@ -15,3 +16,4 @@ IMP shopingcart fixed width
 DEV Tooltips in Home Page
 DEV Basic debtor input
 DEV Basic styling
+DEV Abono
