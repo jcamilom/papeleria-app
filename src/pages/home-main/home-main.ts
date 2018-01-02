@@ -22,6 +22,8 @@ export class HomeMainPage {
     private sale: Sale = new Sale({value: 0, paid: false, paidValue: 0});
     private count: number;
     private nItemsToSale: number;
+    private credit: boolean = false;
+    private debtorName: string = '';
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -66,11 +68,11 @@ export class HomeMainPage {
             this.findSaleValue();
         } else {
             // Ask before remove
-            this.pressEvent(item);
+            this.swipeEvent(item);
         }
     }
 
-    private pressEvent(item: Item) {
+    private swipeEvent(item: Item) {
         // Tag the item to remove
         this.itemToRemove = item;
         // Show confirmation alert
@@ -87,13 +89,27 @@ export class HomeMainPage {
         this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
     }
 
+    private toggleCredit() {
+        
+        console.log(this.credit);
+    }
+
     public generateSale() {
         if(this.sale.value > 0) {
             // Ask if debtor checkbox
-            if(true) {
+            let debtor = this.debtorName.trim();
+            if(this.credit && debtor != '') {
+                // Use an inputd for paidValue, default to 0
+                this.sale.paidValue = 0;
+                this.sale.paid = false;
+                this.sale.debtor = debtor;
+            } else {
                 this.sale.paidValue = this.sale.value;
                 this.sale.paid = true;
             }
+            // Restore the checkbox and input
+            this.credit = false;
+            this.debtorName = '';
             // Update the stock
             this.updateStock();
             // Add the sale to the database
