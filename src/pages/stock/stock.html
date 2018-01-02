@@ -1,6 +1,6 @@
 <ion-header>
 
-    <ion-navbar>            
+    <ion-navbar color="primary">            
         <ion-buttons end>
             <button ion-button icon-only (click)="syncUpdatedItems()">
                 <ion-icon name="sync"></ion-icon>
@@ -46,28 +46,29 @@
                         <h2>{{ item.name }}</h2>
                     </ion-col>
                     <ion-col>
-                        <button ion-button icon-only color="danger" full (click)="removeItemEvent(item)">
+                        <button ion-fab mini clear (click)="removeItemEvent(item)">
                             <ion-icon name="trash"></ion-icon>
                         </button>
                     </ion-col>
                     <ion-col>
-                        <button ion-button icon-only outline (click)="modifyItem(item)">
+                        <button ion-fab mini (click)="modifyItem(item)">
                             <ion-icon name="create"></ion-icon>
                         </button>
                     </ion-col>
                     <ion-col>
-                        <button ion-button full  color="dark" (click)="setItemCustomValue(item)" [disabled]="customIncreaseValue < 0">
+                        <button ion-fab mini color="light"
+                            (click)="setItemCustomValue(item)" [disabled]="customIncreaseValue < 0">
                             ={{ customIncreaseValue }}
                         </button>
                     </ion-col>
                     <ion-col>
-                        <button ion-button color="light" full (click)="decreaseItem(item)">-1</button>
+                        <button ion-fab mini color="light" (click)="decreaseItem(item)">-1</button>
                     </ion-col>
                     <ion-col>
-                        <button ion-button full (click)="increaseItem(item)">+1</button>
+                        <button ion-fab mini color="light" (click)="increaseItem(item)">+1</button>
                     </ion-col>
                     <ion-col>
-                        <button ion-button full  color="secondary" (click)="increaseItemCustomValue(item)">
+                        <button ion-fab mini color="light" (click)="increaseItemCustomValue(item)">
                             <span *ngIf="customIncreaseValue > -1">+</span>{{ customIncreaseValue }}
                         </button>
                     </ion-col>
@@ -75,7 +76,7 @@
                         <button ion-button full clear color="dark">{{ item.nAvailable }}</button>                        
                     </ion-col>
                 </ion-row>
-            </ion-item>            
+            </ion-item>
         </ion-grid>
     </ion-list>
 
