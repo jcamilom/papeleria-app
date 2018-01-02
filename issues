@@ -1,6 +1,5 @@
 TODO
 IMP query filter in itemsProvider
-IMP search by id
 DEV debtors tab
 CASE select items to sell, modify stock, sell items???
 sales if today, dont print day
@@ -8,23 +7,9 @@ sales pagination
 <any>? in MatTableDataSource
 progress bar for paidValue?
 rethink the selectedItems logic(specially after changing sidePanel for first tab)
+rethink allItems logic
 
 DONE
-update sales(for tab SalesHistoric) once the tab is opened
-FIX: after removing item from shopingcart with "-" button, the sale is not generated. S: clearSale (null id)
-Sort the sales by date
-Sort the items by name
-create item STOCK
-create item check if name exists STOCK
-create MESSAGES provider
-toasts for item creation, with close button for error
-basic sync items STOCK
-search items only in home tab
-allItems sortByName in the getAllItems request
-FIX update the item after selling it
-filtering STOCK
-FIX after selling, stock doesnt get updated
-after selling, queryItems is restored
-delete item STOCK.
-FIX STOCK modify item, then delete it -> update of deleted item fails
-DEV STOCK modify whole item
+IMP search by id
+IMP shopingcart fixed width
+DEV Tooltips in Home Page

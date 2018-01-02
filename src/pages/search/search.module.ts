@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { TooltipsModule } from 'ionic-tooltips';
 
 import { SearchPage } from './search';
 
@@ -8,7 +9,8 @@ import { SearchPage } from './search';
     SearchPage,
   ],
   imports: [
-    IonicPageModule.forChild(SearchPage)
+    IonicPageModule.forChild(SearchPage),
+    TooltipsModule
   ],
   exports: [
     SearchPage

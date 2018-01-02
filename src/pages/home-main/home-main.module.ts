@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { HomeMainPage } from './home-main';
+import { TooltipsModule } from 'ionic-tooltips';
 
 @NgModule({
     declarations: [
@@ -8,6 +9,7 @@ import { HomeMainPage } from './home-main';
     ],
     imports: [
         IonicPageModule.forChild(HomeMainPage),
+        TooltipsModule
     ],
     exports: [
         HomeMainPage
