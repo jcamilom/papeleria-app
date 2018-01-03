@@ -11,6 +11,7 @@ import { ItemsProvider } from '../providers/providers';
 import { Api } from '../providers/providers';
 import { SalesProvider } from '../providers/providers';
 import { MessagesProvider } from '../providers/messages/messages';
+import { DebtsProvider } from '../providers/debts/debts';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MessagesProvider } from '../providers/messages/messages';
     ItemsProvider,
     SalesProvider,
     MessagesProvider,
+    DebtsProvider,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
