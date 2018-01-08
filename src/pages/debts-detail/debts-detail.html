@@ -14,50 +14,56 @@
                     <ion-card-title>
                         {{ debtor }}
                     </ion-card-title>
-                    <!-- <p>
-                        Björk first came to prominence as one of the lead vocalists of the 
-                        avant pop Icelandic sextet the Sugarcubes, but when...
-                    </p> -->
-                    </ion-card-content>
+                </ion-card-content>
 
-                    <ion-item>
-                        <ion-icon name='cash' item-start style="color: #85bb65"></ion-icon>
-                        Deuda
-                        <ion-badge item-end>
-                            {{value | currency:'COP':'symbol-narrow':'1.0'}}
-                        </ion-badge>
-                    </ion-item>
+                <ion-item>
+                    <ion-icon name='stats' item-start style="color: #efb24f"></ion-icon>
+                    Por pagar
+                    <ion-badge item-end>
+                        {{debt | currency:'COP':'symbol-narrow':'1.0'}}
+                    </ion-badge>
+                </ion-item>
 
-                    <ion-item>
-                        <ion-icon name='thumbs-up' item-start style="color: #e8cda8"></ion-icon>
-                        Valor pagado
-                        <ion-badge item-end>
-                            {{paidValue | currency:'COP':'symbol-narrow':'1.0'}}
-                        </ion-badge>
-                    </ion-item>
+                <ion-item>
+                    <ion-icon name='cash' item-start style="color: #85bb65"></ion-icon>
+                    Deuda
+                    <ion-badge item-end>
+                        {{sumValues | currency:'COP':'symbol-narrow':'1.0'}}
+                    </ion-badge>
+                </ion-item>
 
-                    <ion-item>
-                        <ion-icon name='calendar' item-start style="color: #55acee"></ion-icon>
-                        Fecha último pago
-                        <ion-badge item-end>
-                            {{date | date:'dd-MM-yyyy'}}
-                        </ion-badge>
-                    </ion-item>
+                <ion-item>
+                    <ion-icon name='thumbs-up' item-start style="color: #e8cda8"></ion-icon>
+                    Valor pagado
+                    <ion-badge item-end>
+                        {{sumPaidValues | currency:'COP':'symbol-narrow':'1.0'}}
+                    </ion-badge>
+                </ion-item>
+
+                <ion-item>
+                    <ion-icon name='calendar' item-start style="color: #55acee"></ion-icon>
+                    Fecha último pago
+                    <ion-badge item-end>
+                        {{lastPaymentDate | date:'dd-MM-yyyy'}}
+                    </ion-badge>
+                </ion-item>
+
             </ion-card>
         </ion-col>
     </ion-row>
     
     <ion-row>
-        <ion-col *ngFor="let debt of debts; let idx = index" col-4>
+        <ion-col *ngFor="let debt of debts" col-4> <!-- [hidden]="shownSessions === 0" -->
             
             <ion-card>
                 <ion-card-header>
-                    Deuda #{{ idx + 1 }}
-                </ion-card-header>            
+                    {{debt.createdAt | date:'short'}}
+                </ion-card-header>
                 <ion-card-content>
                     <p>Valor: {{ debt.value }}</p>
                     <p>Valor pagado: {{ debt.paidValue }}</p>
                     <p>Pagado: {{ debt.paid }}</p>
+                    <p>ID venta: {{ debt.saleId }}</p>
                     <ion-row>
                         <ion-col>
                             <button ion-button icon-left clear small>

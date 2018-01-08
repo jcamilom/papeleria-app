@@ -49,10 +49,6 @@ export class DebtsMasterPage {
 
     ionViewWillEnter() {
         console.log('ionViewWillEnter DebtsMasterPage');
-        if(this.debtsProvider.getUpdateAvailable()) {
-            console.log('UpdateAvailable from DebtsPage!');
-            this.debtsProvider.getDebts();
-        }
     }
 
     private generateDebtors() {
@@ -78,6 +74,8 @@ export class DebtsMasterPage {
     onDebtorSelected(debtor, idx) {
         this.currentSelected = idx;
         let selectedDebts = this.allDebts.filter(debt => debt.debtor == debtor);
+        // Sort the debts by creation time (desc)
+        selectedDebts.sort(this.debtsProvider.sortByCreatedAtDesc);
         this.detailNavCtrl.setRoot(DebtsDetail, {debtor: debtor, debts: selectedDebts});
     }
 

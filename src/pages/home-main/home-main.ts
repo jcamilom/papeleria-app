@@ -102,6 +102,7 @@ export class HomeMainPage {
         if(this.sale.value > 0) {
             // Ask if debtor checkbox
             let debtor = this.debtorName.trim();
+            let genDebt = false;
             if(this.credit && debtor != '') {
                 this.sale.debtor = debtor;
                 this.sale.paid = (this.paidValue >= this.sale.value) ? true : false;
@@ -109,24 +110,8 @@ export class HomeMainPage {
                 if(this.paidValue > this.sale.value) this.paidValue = this.sale.value;
                 this.sale.paidValue = (this.paidValue >= 0) ? this.paidValue : 0;
 
-                // Generate a new debt
-                let debt = {
-                    value: this.sale.value,
-                    paid: this.sale.paid,
-                    paidValue: this.sale.paidValue,
-                    debtor: this.sale.debtor
-                };
-                this.debtsProvider.AddDebt(new Debt(debt)).subscribe((resp) => {
-                    if(resp.status == 'success') {
-                        // Set a flag in debtsProvider, so that first page that uses the global debts
-                        // updates the global value before it opens
-                        this.debtsProvider.setUpdateAvailable(true);
-                        console.log("Debt successfully added");
-                    } else {
-                        console.log("Debt couldn't be added");
-                    }
-                }, (err) => { throw(err); });
-
+                // Flag to generate a new debt
+                genDebt = true;
             } else {
                 this.sale.paidValue = this.sale.value;
                 this.sale.paid = true;
@@ -142,6 +127,27 @@ export class HomeMainPage {
             // Add the sale to the database
             this.salesProvider.AddSale(this.sale).subscribe((resp) => {
                 if(resp.status == 'success') {
+                    // Generate the debt
+                    if(genDebt) {
+                        let debt = {
+                            value: this.sale.value,
+                            paid: this.sale.paid,
+                            paidValue: this.sale.paidValue,
+                            debtor: this.sale.debtor,
+                            saleId: resp.data[0].id
+                        };
+                        this.debtsProvider.AddDebt(new Debt(debt)).subscribe((resp) => {
+                            if(resp.status == 'success') {
+                                // Set a flag in debtsProvider, so that first page that uses the global debts
+                                // updates the global value before it opens
+                                this.debtsProvider.setUpdateAvailable(true);
+                                console.log("Debt successfully added");
+                            } else {
+                                console.log("Debt couldn't be added");
+                            }
+                        }, (err) => { throw(err); });
+                    }
+
                     // Clear the sale
                     this.sale.clearSale();
                     // Clear the selected Items

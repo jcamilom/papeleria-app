@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, Nav } from 'ionic-angular';
 
 import { DebtsMaster } from '../../pages/pages';
+import { DebtsProvider } from '../../providers/providers';
 
 @IonicPage()
 @Component({
@@ -18,13 +19,22 @@ export class DebtsPage {
     masterPage: any = null;
     detailPage: any = null;
 
-    constructor() { }
+    constructor(private debtsProvider: DebtsProvider) { }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsPage');
         
         // Set initial pages for our nav controllers...
         this.masterNav.setRoot(DebtsMaster, { detailNavCtrl: this.detailNav });
+    }
+
+    ionViewWillEnter() {
+        console.log('DebtsPage ionViewWillEnter');
+        // Check if an update is available
+        if(this.debtsProvider.getUpdateAvailable()) {
+            console.log('UpdateAvailable from DebtsPage!');
+            this.debtsProvider.getDebts();
+        }
     }
 
 }
