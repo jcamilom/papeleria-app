@@ -3,16 +3,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-debts-detail',
-  templateUrl: 'debts-detail.html',
+    selector: 'page-debts-detail',
+    templateUrl: 'debts-detail.html',
 })
 export class DebtsDetailPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    debtor: any = null;
+    value: any = null;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad DebtsDetailPage');
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams) {
+        this.debtor = navParams.data.debtor;
+        this.value = navParams.data.value;
+    }
+
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad DebtsDetailPage');
+    }
 
 }

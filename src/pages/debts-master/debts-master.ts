@@ -13,7 +13,7 @@ import { DebtsDetail } from '../../pages/pages';
 })
 export class DebtsMasterPage {
 
-    detNavCtrl: any;
+    detailNavCtrl: any;
 
     private allDebts: Debt[];
     private debtors;
@@ -24,12 +24,12 @@ export class DebtsMasterPage {
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         private debtsProvider: DebtsProvider) {
-        this.detNavCtrl = this.navParams.get('detailNavCtrl');
+        this.detailNavCtrl = this.navParams.get('detailNavCtrl');
     }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsMasterPage');
-        this.detNavCtrl.setRoot(DebtsDetail);
+        //this.detailNavCtrl.setRoot(DebtsDetail);
 
         this.debtors = [];
 
@@ -69,6 +69,10 @@ export class DebtsMasterPage {
 
     private generateDebts() {
 
+    }
+
+    onDebtorSelected(debtor) {
+        this.detailNavCtrl.setRoot(DebtsDetail, {debtor: debtor, value: 100});
     }
 
 }
