@@ -2,5 +2,10 @@ page-debts-detail {
     /* Fix the margin at the bottom of the content for a tab */
     .content .fixed-content, .content .scroll-content{
         margin-bottom: 0px !important;
+        /* background-color: #f4f4f4 !important; */
+    }
+
+    .social-cards ion-card ion-col {
+        padding: 0;
     }
 }

@@ -3,4 +3,8 @@ page-search {
     .content .fixed-content, .content .scroll-content{
         margin-bottom: 0px !important;
     }
+
+    button.selected {
+        background-color: #f4f4f4 !important;
+    }
 }

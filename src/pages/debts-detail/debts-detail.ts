@@ -10,6 +10,9 @@ export class DebtsDetailPage {
 
     debtor: any = null;
     debts: any = null;
+    value = 25000;
+    paidValue = 12000;
+    date: Date = new Date();
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         this.debtor = navParams.data.debtor;

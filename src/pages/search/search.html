@@ -24,7 +24,8 @@
         <!-- <button ion-item (click)="item.selected=!item.selected" *ngFor="let item of queryItems"> -->
         <button ion-item (tap)="changeSelectedItems(item)"
             *ngFor="let item of queryItems" [disabled]="item.nAvailable == 0"
-            [tooltip]="item.name" positionV="bottom" event="press" duration="4000" arrow>
+            [tooltip]="item.name" positionV="bottom" event="press" duration="4000" arrow
+            [class.selected]="item.selected">
             <h2>{{item.name}}</h2>
             <p>Precio: {{item.price | currency:'COP':'symbol-narrow':'1.0'}}
                  | ID: {{item.id}} | {{item.nAvailable}}</p>
