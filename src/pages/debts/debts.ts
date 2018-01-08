@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, Nav } from 'ionic-angular';
 
-import { DebtsProvider } from '../../providers/providers';
-import { Debt } from '../../models/debt';
-import { DebtsMain } from '../../pages/pages';
-/* import { MessagesProvider } from '../../providers/providers'; */
+import { DebtsMaster } from '../../pages/pages';
 
 @IonicPage()
 @Component({
@@ -12,58 +9,22 @@ import { DebtsMain } from '../../pages/pages';
     templateUrl: 'debts.html',
 })
 export class DebtsPage {
-    debtsMain:any = DebtsMain;
 
-    private allDebts: Debt[];
-    private debtors;
-    private debts: Debt[];
+    // Grab References to our 2 NavControllers...
+    @ViewChild('detailNav') detailNav: Nav;
+    @ViewChild('masterNav') masterNav: Nav;
 
-    constructor(public navCtrl: NavController,
-        public navParams: NavParams,
-        private debtsProvider: DebtsProvider) {
-    }
+    // Empty placeholders for the 'master/detail' pages...
+    masterPage: any = null;
+    detailPage: any = null;
+
+    constructor() { }
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsPage');
-
-        this.debtors = [];
-
-        this.debtsProvider.currentDebts.subscribe(debts => {
-            // Sort by name before setting the data
-            //debts.sort(this.debtsProvider.sortByName);
-            this.allDebts = debts;
-            // Initialize / Update the query debts when global debts where updated
-            //this.queryItems = this.allItems;
-            // Filter the query debts (First time the '' show all the debts)
-            //this.filterItems();
-            this.generateDebtors();
-        });
-
-        // Initialize the updatedItems array
-        this.debtsProvider.getDebts();
-    }
-
-    ionViewWillEnter() {
-        console.log('ionViewWillEnter DebtsPage');
-        if(this.debtsProvider.getUpdateAvailable()) {
-            console.log('UpdateAvailable from DebtsPage!');
-            this.debtsProvider.getDebts();
-        }
-    }
-
-    private generateDebtors() {
-        for(let debt of this.allDebts) {
-            // If the debtor doesn't exist, push it
-            if(!this.debtors.includes(debt.debtor)) {
-                this.debtors.push(debt.debtor);
-            }
-        }
-        // Sort debtors by name
-        this.debtors.sort();
-    }
-
-    private generateDebts() {
-
+        
+        // Set initial pages for our nav controllers...
+        this.masterNav.setRoot(DebtsMaster, { detailNavCtrl: this.detailNav });
     }
 
 }
