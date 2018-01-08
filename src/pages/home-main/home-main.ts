@@ -5,6 +5,8 @@ import { ItemsProvider } from '../../providers/providers';
 import { Item } from '../../models/item';
 import { SalesProvider } from '../../providers/providers';
 import { Sale } from '../../models/sale';
+import { DebtsProvider } from '../../providers/providers';
+import { Debt } from '../../models/debt';
 import { MessagesProvider } from '../../providers/providers';
 
 const removeItemTitle: string = 'Remover ítem';
@@ -30,6 +32,7 @@ export class HomeMainPage {
         public navParams: NavParams,
         private itemsProvider: ItemsProvider,
         private salesProvider: SalesProvider,
+        private debtsProvider: DebtsProvider,
         private msgProvider: MessagesProvider) {
     }
 
@@ -104,7 +107,23 @@ export class HomeMainPage {
                 this.sale.paid = (this.paidValue >= this.sale.value) ? true : false;
                 // If abono is bigger than sale value...
                 if(this.paidValue > this.sale.value) this.paidValue = this.sale.value;
-                this.sale.paidValue = (this.paidValue >= 0) ? this.paidValue : 0;                
+                this.sale.paidValue = (this.paidValue >= 0) ? this.paidValue : 0;
+
+                // Generate a new debt
+                let debt = {
+                    value: this.sale.value,
+                    paid: this.sale.paid,
+                    paidValue: this.sale.paidValue,
+                    debtor: this.sale.debtor
+                };
+                this.debtsProvider.AddDebt(new Debt(debt)).subscribe((resp) => {
+                    if(resp.status == 'success') {
+                        console.log("Debt successfully added");
+                    } else {
+                        console.log("Debt couldn't be added");
+                    }
+                }, (err) => { throw(err); });
+
             } else {
                 this.sale.paidValue = this.sale.value;
                 this.sale.paid = true;
