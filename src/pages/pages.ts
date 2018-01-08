@@ -13,3 +13,5 @@ export const Tab4Root = 'DebtsPage';
 
 export const HomeMain = 'HomeMainPage';
 export const HomeSide = 'SearchPage';
+
+export const DebtsMain = 'DebtsDetailPage';

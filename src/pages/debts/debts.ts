@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { DebtsProvider } from '../../providers/providers';
 import { Debt } from '../../models/debt';
+import { DebtsMain } from '../../pages/pages';
 /* import { MessagesProvider } from '../../providers/providers'; */
 
 @IonicPage()
@@ -11,8 +12,11 @@ import { Debt } from '../../models/debt';
     templateUrl: 'debts.html',
 })
 export class DebtsPage {
+    debtsMain:any = DebtsMain;
 
     private allDebts: Debt[];
+    private debtors;
+    private debts: Debt[];
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -21,6 +25,9 @@ export class DebtsPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsPage');
+
+        this.debtors = [];
+
         this.debtsProvider.currentDebts.subscribe(debts => {
             // Sort by name before setting the data
             //debts.sort(this.debtsProvider.sortByName);
@@ -29,10 +36,24 @@ export class DebtsPage {
             //this.queryItems = this.allItems;
             // Filter the query debts (First time the '' show all the debts)
             //this.filterItems();
+            this.generateDebtors();
         });
 
         // Initialize the updatedItems array
         this.debtsProvider.getDebts();
+    }
+
+    private generateDebtors() {
+        for(let debt of this.allDebts) {
+            // If the debtor doesn't exist, push it
+            if(!this.debtors.includes(debt.debtor)) {
+                this.debtors.push(debt.debtor);
+            }
+        }
+    }
+
+    private generateDebts() {
+
     }
 
 }
