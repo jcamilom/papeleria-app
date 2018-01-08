@@ -118,6 +118,9 @@ export class HomeMainPage {
                 };
                 this.debtsProvider.AddDebt(new Debt(debt)).subscribe((resp) => {
                     if(resp.status == 'success') {
+                        // Set a flag in debtsProvider, so that first page that uses the global debts
+                        // updates the global value before it opens
+                        this.debtsProvider.setUpdateAvailable(true);
                         console.log("Debt successfully added");
                     } else {
                         console.log("Debt couldn't be added");

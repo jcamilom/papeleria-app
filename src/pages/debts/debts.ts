@@ -43,6 +43,14 @@ export class DebtsPage {
         this.debtsProvider.getDebts();
     }
 
+    ionViewWillEnter() {
+        console.log('ionViewWillEnter DebtsPage');
+        if(this.debtsProvider.getUpdateAvailable()) {
+            console.log('UpdateAvailable from DebtsPage!');
+            this.debtsProvider.getDebts();
+        }
+    }
+
     private generateDebtors() {
         for(let debt of this.allDebts) {
             // If the debtor doesn't exist, push it
@@ -50,6 +58,8 @@ export class DebtsPage {
                 this.debtors.push(debt.debtor);
             }
         }
+        // Sort debtors by name
+        this.debtors.sort();
     }
 
     private generateDebts() {
