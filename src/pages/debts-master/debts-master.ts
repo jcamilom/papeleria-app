@@ -13,13 +13,13 @@ import { DebtsDetail } from '../../pages/pages';
 })
 export class DebtsMasterPage {
 
-    detailNavCtrl: any;
+    private detailNavCtrl: any;
 
+    private currentSelected: number = null;
     private allDebts: Debt[];
     private debtors;
     private debts: Debt[];
 
-    
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -29,8 +29,7 @@ export class DebtsMasterPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsMasterPage');
-        //this.detailNavCtrl.setRoot(DebtsDetail);
-
+        
         this.debtors = [];
 
         this.debtsProvider.currentDebts.subscribe(debts => {
@@ -65,14 +64,21 @@ export class DebtsMasterPage {
         }
         // Sort debtors by name
         this.debtors.sort();
+
+        // Set the "placeholder"
+        if(this.debtors.length > 0) {
+            this.onDebtorSelected(this.debtors[0], 0);
+        }
     }
 
     private generateDebts() {
 
     }
 
-    onDebtorSelected(debtor) {
-        this.detailNavCtrl.setRoot(DebtsDetail, {debtor: debtor, value: 100});
+    onDebtorSelected(debtor, idx) {
+        this.currentSelected = idx;
+        let selectedDebts = this.allDebts.filter(debt => debt.debtor == debtor);
+        this.detailNavCtrl.setRoot(DebtsDetail, {debtor: debtor, debts: selectedDebts});
     }
 
 }

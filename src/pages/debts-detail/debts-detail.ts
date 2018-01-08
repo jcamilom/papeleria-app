@@ -9,11 +9,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class DebtsDetailPage {
 
     debtor: any = null;
-    value: any = null;
+    debts: any = null;
 
     constructor(public navCtrl: NavController, public navParams: NavParams) {
         this.debtor = navParams.data.debtor;
-        this.value = navParams.data.value;
+        this.debts = navParams.data.debts;
     }
 
     ionViewDidLoad() {

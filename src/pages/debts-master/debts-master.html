@@ -5,9 +5,11 @@
 </ion-header>
 
 
-<ion-content padding>    
+<ion-content>    
     <ion-list>
-        <button ion-item *ngFor="let debtor of debtors" (click)="onDebtorSelected(debtor)">
+        <button ion-item *ngFor="let debtor of debtors; let idx = index"
+            (click)="onDebtorSelected(debtor, idx)"
+            [class.selected]="idx === currentSelected">
             <h2>{{ debtor }}</h2>
         </button>
     </ion-list>    
