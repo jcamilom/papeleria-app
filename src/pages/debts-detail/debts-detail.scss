@@ -8,4 +8,20 @@ page-debts-detail {
     .social-cards ion-card ion-col {
         padding: 0;
     }
+
+    ion-icon.debt-icon {
+        color: #ff2323;
+    }
+
+    ion-icon.debt-icon.paid {
+        color: #85bb65;
+    }
+
+    .buttons-debt-card button {
+        padding: 0px 4px;
+    }
+
+    ion-row.buttons-debt-card {
+        text-align: center;
+    }
 }

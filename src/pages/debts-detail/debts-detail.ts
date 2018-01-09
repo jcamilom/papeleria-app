@@ -21,7 +21,7 @@ export class DebtsDetailPage {
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         private debtsProvider: DebtsProvider) {
-            
+
         this.debtor = navParams.data.debtor;
         this.debts = navParams.data.debts;
     }
@@ -45,4 +45,4 @@ export class DebtsDetailPage {
         this.debt = this.sumValues - this.sumPaidValues;
     }
 
-}
+}   

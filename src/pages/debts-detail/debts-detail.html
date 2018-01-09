@@ -7,6 +7,12 @@
 
 <ion-content class="cards-bg social-cards">
 
+    <ion-fab right bottom>
+        <button ion-fab (click)="createItem()">
+            <ion-icon name="calculator"></ion-icon>
+        </button>
+    </ion-fab>
+
     <ion-row>
         <ion-col col-6>
             <ion-card>
@@ -17,7 +23,7 @@
                 </ion-card-content>
 
                 <ion-item>
-                    <ion-icon name='stats' item-start style="color: #efb24f"></ion-icon>
+                    <ion-icon name='cash' item-start style="color: #85bb65"></ion-icon>
                     Por pagar
                     <ion-badge item-end>
                         {{debt | currency:'COP':'symbol-narrow':'1.0'}}
@@ -25,8 +31,8 @@
                 </ion-item>
 
                 <ion-item>
-                    <ion-icon name='cash' item-start style="color: #85bb65"></ion-icon>
-                    Deuda
+                    <ion-icon name='stats' item-start style="color: #efb24f"></ion-icon>
+                    Total deuda
                     <ion-badge item-end>
                         {{sumValues | currency:'COP':'symbol-narrow':'1.0'}}
                     </ion-badge>
@@ -60,11 +66,22 @@
                     {{debt.createdAt | date:'short'}}
                 </ion-card-header>
                 <ion-card-content>
-                    <p>Valor: {{ debt.value }}</p>
-                    <p>Valor pagado: {{ debt.paidValue }}</p>
-                    <p>Pagado: {{ debt.paid }}</p>
-                    <p>ID venta: {{ debt.saleId }}</p>
-                    <ion-row>
+                    <p>Valor: <span style="float: right;">
+                        {{debt.value | currency:'COP':'symbol-narrow':'1.0'}}</span>
+                    </p>
+                    <p>Valor pagado: <span style="float: right;">
+                        {{ debt.paidValue | currency:'COP':'symbol-narrow':'1.0'}}</span>
+                    </p>
+                    <p>Pagado: <span style="float: right;">
+                        <ion-icon class="debt-icon"
+                            [name]="debt.paid ? 'checkmark' : 'close'"
+                            [class.paid]="debt.paid == true">
+                        </ion-icon></span>
+                    </p>
+                    <p>ID venta:
+                        <span style="float: right;">{{ debt.saleId }}</span>
+                    </p>
+                    <ion-row class="buttons-debt-card">
                         <ion-col>
                             <button ion-button icon-left clear small>
                                 <ion-icon name="trash"></ion-icon>
