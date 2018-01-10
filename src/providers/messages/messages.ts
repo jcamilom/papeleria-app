@@ -18,7 +18,7 @@ export class MessagesProvider {
                 {
                     text: 'Cancelar',
                     handler: () => {
-                        console.log('Cancel clicked');
+                        //console.log('Cancel clicked');
                     }
                 },
                 {

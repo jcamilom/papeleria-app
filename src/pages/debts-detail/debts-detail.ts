@@ -5,6 +5,10 @@ import { Debt } from '../../models/debt';
 import { DebtsProvider } from '../../providers/providers';
 import { MessagesProvider } from '../../providers/providers';
 
+const removeDebtTitle: string = 'Eliminar deuda';
+const removeDebtMessage: string = '¿Está seguro que desea eliminar la deuda?';
+const removeDebtMessageWarning: string = 'La deuda no ha sido pagada, ¿está seguro que desea eliminarla?';
+
 @IonicPage()
 @Component({
     selector: 'page-debts-detail',
@@ -19,7 +23,7 @@ export class DebtsDetailPage {
     sumPaidValues: number;
     debt: number;
     lastPaymentDate: Date;
-    debtsUpdated: boolean;
+    debtToRemove;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -29,8 +33,6 @@ export class DebtsDetailPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsDetailPage');
-        // Set the debtsUpdate
-        this.debtsUpdated = false;
         // Get the passed values
         this.debtor = this.navParams.data.debtor;
         this.debts = this.navParams.data.debts;
@@ -158,9 +160,9 @@ export class DebtsDetailPage {
         this.debtsProvider.updateDebt(debt).subscribe((resp) => {
             if(resp.status == 'success') {
                 let respDebt = resp.data[0];
-                // Update allItems (for this page and global)
-                //this.itemsProvider.getAllItems();
-                // Notify the user that the item was successfully added
+                // Update allDebts (for this page and global)
+                //this.debtsProvider.getAllDebts();
+                // Notify the user that the debt was successfully added
                 //this.msgProvider.presentToast('Ítem añadido exitosamente.');
                 console.log(respDebt.id + " updated!");
                 // Update the debt in the local array of debts
@@ -178,10 +180,46 @@ export class DebtsDetailPage {
                 console.log("The debt couldnt be updated");
             }
         }, (err) => { 
-            // Error. It's possible that item already exists
+            // Error. It's possible that debt already exists
             /* this.msgProvider.presentToast(
                 `No se pudo crear el ítem. Es posible que este ítem
                     ya exista en la base de datos.`, true); */
+            throw(err);
+        });
+    }
+
+    public removeDebtEvent(debt: Debt) {
+        // Tag the debt to remove
+        this.debtToRemove = debt;
+        // Show confirmation alert
+        let message = debt.paid ? removeDebtMessage : removeDebtMessageWarning;
+        this.msgProvider.showConfirmAlert(this.removeDebtHandler, removeDebtTitle, message);
+    }
+
+    public removeDebtHandler = () => {
+        this.removeDebt(this.debtToRemove);
+    }
+
+    public removeDebt(debt: Debt) {
+        this.debtsProvider.deleteDebt(debt).subscribe((resp) => {
+            if(resp.status == 'success') {
+                // Remove debt from the local array
+                let index = this.debts.findIndex(this.debtsProvider.findDebtById, [resp.data[0].id]);
+                // The debt exists -> remove it
+                if(index > -1) this.debts.splice(index, 1);
+                console.log("Debt " + resp.data[0].id + " deleted!");
+                this.debtToRemove = null;
+                // Set the flag for updating the debts for the other pages (before leaving the page)
+                this.debtsProvider.setUpdateAvailable(true);
+                // Update the values to pay
+                this.generateSums();
+                // Toast
+                this.msgProvider.presentToast('La deuda fue eliminada exitosamente.');
+            } else {
+                console.log("The debt couldnt be deleted")
+            }
+        }, (err) => {
+            console.log("The debt couldnt be deleted")
             throw(err);
         });
     }

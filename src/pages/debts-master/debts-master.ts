@@ -51,6 +51,9 @@ export class DebtsMasterPage {
     }
 
     private generateDebtors() {
+        // Clear the debtors array
+        this.debtors = [];
+        // Generate the new ones
         for(let debt of this.allDebts) {
             // If the debtor doesn't exist, push it
             if(!this.debtors.includes(debt.debtor)) {
@@ -62,7 +65,7 @@ export class DebtsMasterPage {
 
         // Set the "placeholder"
         if(this.debtors.length > 0) {
-            if(this.nameCurrentSelected == null) {
+            if(this.nameCurrentSelected == null || !this.debtors.includes(this.nameCurrentSelected)) {
                 this.onDebtorSelected(this.debtors[0]);
             } else {
                 // This is needed when for example the selectedDebor gets a new debt
