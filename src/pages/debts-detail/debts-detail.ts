@@ -8,6 +8,7 @@ import { MessagesProvider } from '../../providers/providers';
 const removeDebtTitle: string = 'Eliminar deuda';
 const removeDebtMessage: string = '¿Está seguro que desea eliminar la deuda?';
 const removeDebtMessageWarning: string = 'La deuda no ha sido pagada, ¿está seguro que desea eliminarla?';
+const debtPaymentSuccess: string = 'El abono se registró exitosamente.';
 
 @IonicPage()
 @Component({
@@ -24,6 +25,8 @@ export class DebtsDetailPage {
     debt: number;
     lastPaymentDate: Date;
     debtToRemove;
+    debtToPay: Debt;
+    debtToPayFlag: boolean;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -33,6 +36,8 @@ export class DebtsDetailPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad DebtsDetailPage');
+        // Used when a single debt will be paid
+        this.debtToPayFlag = false;
         // Get the passed values
         this.debtor = this.navParams.data.debtor;
         this.debts = this.navParams.data.debts;
@@ -87,22 +92,67 @@ export class DebtsDetailPage {
         }
     }
 
-    public settleDebt() {
-        this.msgProvider.showAlertPrompt(this.settleDebtHandler,
-            [{name: 'value', type: 'number', min: 0, value: String(this.debt)}],
-            'Abonar deuda', 'Ingrese el valor a abonar: ', 'Abonar');
+    public settleDebt(debt?: Debt) {
+        // Pay single debt
+        if(debt) {
+            let theDebt = debt.value - debt.paidValue;
+            if(theDebt > 0) {
+                this.debtToPayFlag = true;
+                this.debtToPay = debt;
+                this.msgProvider.showAlertPrompt(this.settleDebtHandler,
+                    [{name: 'value', type: 'number', min: 0, value: String(theDebt)}],
+                    'Abonar deuda', 'Ingrese el valor a abonar: ', 'Abonar', this.settleDebtCancelHandler);
+            } else {
+                this.msgProvider.presentToast('Esta deuda ya ha sido completamente pagada.');
+            }
+        }
+        // Pay multiple debts
+        else {
+            if(this.debt > 0) {
+                this.msgProvider.showAlertPrompt(this.settleDebtHandler,
+                    [{name: 'value', type: 'number', min: 0, value: String(this.debt)}],
+                    'Abonar deuda', 'Ingrese el valor a abonar: ', 'Abonar');
+            } else {
+                this.msgProvider.presentToast('Todas las deudas de ' + this.debtor + ' ya han sido pagadas.');
+            }
+        }
     }
 
     public settleDebtHandler = (data: any) : void => {
+        // Debt(ValueToPay) for both single and multiple payments
+        let theDebt = this.debtToPayFlag ? (this.debtToPay.value - this.debtToPay.paidValue) : this.debt;
         let parsedInstallment: number = parseInt(data.value);
         // Check if it's a valid value
         if(!isNaN(parsedInstallment)) {
             // Chek if it's a positive value
             if(parsedInstallment >= 0) {
                 // Check if the value is less than the debt
-                if(parsedInstallment <= this.debt) {
-                    //Look for the oldest debt and settle it
-                    this.loopSettleDebts(parsedInstallment);
+                if(parsedInstallment <= theDebt) {
+                    // Pay single debt
+                    if(this.debtToPayFlag) {
+                        // Pay a portion of this debt
+                        this.debtToPay.paidValue += parsedInstallment;
+                        // Check if this debt is now fully paid
+                        if(this.debtToPay.value == this.debtToPay.paidValue) this.debtToPay.paid = true;
+                        // Update the debt in the db
+                        let debtToUpdate = {
+                            id: this.debtToPay.id,
+                            body: {
+                                paidValue: this.debtToPay.paidValue,
+                                paid: this.debtToPay.paid}
+                        };
+                        this.updateDebt(debtToUpdate, true);
+                        // Update the values to pay
+                        this.generateSumPaidValues();
+                        this.debt = this.sumValues - this.sumPaidValues;
+                        // Clear the single payment variables
+                        this.debtToPayFlag = false;
+                        this.debtToPay = null;
+                    }
+                    // Look for the oldest debts and settle them
+                    else {
+                        this.loopSettleDebts(parsedInstallment); 
+                    }                    
                 } else {
                     // Bigger value
                     this.msgProvider.presentToast(
@@ -118,6 +168,11 @@ export class DebtsDetailPage {
             this.msgProvider.presentToast(
                 "No se pudo generar el abono. El valor ingresado no es válido.", true);
         }
+    }
+
+    public settleDebtCancelHandler = (data: any) : void => {
+        this.debtToPayFlag = false;
+        this.debtToPay = null;
     }
 
     loopSettleDebts(value: number) {
@@ -162,15 +217,17 @@ export class DebtsDetailPage {
                 let respDebt = resp.data[0];
                 // Update allDebts (for this page and global)
                 //this.debtsProvider.getAllDebts();
-                // Notify the user that the debt was successfully added
-                //this.msgProvider.presentToast('Ítem añadido exitosamente.');
                 console.log(respDebt.id + " updated!");
                 // Update the debt in the local array of debts
                 //let index = this.debts.findIndex(this.debtsProvider.findDebtById, [respDebt.id]);
                 //if(index > -1) {
                     //this.debts[index] = respDebt;
                     // Update lastPaymentDate
-                    if(updateLastPaymentDate) this.lastPaymentDate = new Date(respDebt.updatedAt);
+                    if(updateLastPaymentDate) {
+                        this.lastPaymentDate = new Date(respDebt.updatedAt);
+                        // Notify the user that the debt was successfully paid
+                        this.msgProvider.presentToast(debtPaymentSuccess);
+                    }
                 //}
                 // Set the flag for updating the debts for the other pages (before leaving the page)
                 this.debtsProvider.setUpdateAvailable(true);

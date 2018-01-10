@@ -8,7 +8,7 @@
 <ion-content class="cards-bg social-cards">
 
     <ion-fab right bottom>
-        <button ion-fab (click)="settleDebt()" [disabled]="debt == 0">
+        <button ion-fab (click)="settleDebt()"> <!-- [disabled]="debt == 0" -->
             <ion-icon name="calculator"></ion-icon>
         </button>
     </ion-fab>
@@ -94,7 +94,7 @@
                             </button>
                         </ion-col>
                         <ion-col>
-                            <button ion-button icon-left clear small disabled>
+                            <button ion-button icon-left clear small (click)="settleDebt(debt)">
                                 <ion-icon name="cash"></ion-icon>
                                 Cobrar
                             </button>

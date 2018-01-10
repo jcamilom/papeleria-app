@@ -51,7 +51,8 @@ export class MessagesProvider {
     }
 
     public showAlertPrompt(agreeHandler: (data: any) => any, inputs: any,
-        alertTitle: string, message: string, agreeText: string): void {
+        alertTitle: string, message: string, agreeText: string,
+        cancelHandler: (data: any) => any = () => { }): void {
         
             let prompt = this.alertCtrl.create({
             title: alertTitle,
@@ -60,7 +61,8 @@ export class MessagesProvider {
             buttons: [
                 {
                     text: 'Cancelar',
-                    role: 'cancel'
+                    role: 'cancel',
+                    handler: cancelHandler
                 },
                 {
                     text: agreeText,

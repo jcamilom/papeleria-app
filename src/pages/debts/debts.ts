@@ -39,6 +39,11 @@ export class DebtsPage {
 
     ionViewWillLeave() {
         console.log('DebtsPage ionViewWillLeave');
+        // Check if an update is available
+        if(this.debtsProvider.getUpdateAvailable()) {
+            console.log('UpdateAvailable from DebtsPage!');
+            this.debtsProvider.getDebts();
+        }
     }
 
 }

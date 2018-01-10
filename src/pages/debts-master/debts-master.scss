@@ -6,15 +6,21 @@ page-debts-master {
 
     button.selected {
         background-color: #f4f4f4 !important;
+        border: 2px solid color($colors, primary);
+        /* color: color($colors, danger); */
 
         ion-label {
-            border-left: 2px solid #4f8cef;
+            border-left: 2px solid color($colors, primary);
             padding-left: 10px;
         }
+
+        /* ion-label h2 {
+            font-weight: bold;
+        } */
     }
 
-    /* button:hover {
+    button:hover {
         background-color: #f4f4f4 !important;
-    } */
+    }
 
 }
