@@ -4,7 +4,6 @@ What if while settling debts the db doesnt reply? local debts have already been 
     -> revert changes calling getAllDebts
 dbClick for item in shopingcart
 IMP query filter in itemsProvider
-DEV debtors tab
 CASE select items to sell, modify stock, sell items???
 sales if today, dont print day
 sales pagination
@@ -20,3 +19,4 @@ DEV Tooltips in Home Page
 DEV Basic debtor input
 DEV Basic styling
 DEV Abono
+DEV debtors tab

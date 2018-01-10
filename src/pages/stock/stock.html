@@ -21,17 +21,13 @@
     <ion-list>
         <ion-grid>
             <ion-row>
-                <ion-col col-5>
+                <ion-col col-6>
                     <ion-searchbar
                         (ionInput)="filterItems($event)"
                         placeholder="Buscar items por nombre, id...">
                     </ion-searchbar>
                 </ion-col>
-                <ion-col></ion-col>
-                <ion-col></ion-col>
-                <ion-col></ion-col>
-                <ion-col></ion-col>
-                <ion-col></ion-col>
+                <ion-col col-4></ion-col>
                 <ion-col col-2>
                     <ion-item>
                         <ion-label>Valor</ion-label>
@@ -42,37 +38,31 @@
 
             <ion-item *ngFor="let item of queryItems">
                 <ion-row>
-                    <ion-col col-6>
+                    <ion-col>
                         <h2>{{ item.name }}</h2>
                     </ion-col>
-                    <ion-col>
+                    <ion-col col-auto>
                         <button ion-fab mini clear (click)="removeItemEvent(item)">
                             <ion-icon name="trash"></ion-icon>
                         </button>
                     </ion-col>
-                    <ion-col>
+                    <ion-col col-auto>
                         <button ion-fab mini (click)="modifyItem(item)">
                             <ion-icon name="create"></ion-icon>
                         </button>
                     </ion-col>
-                    <ion-col>
+                    <ion-col col-auto>
                         <button ion-fab mini color="light"
                             (click)="setItemCustomValue(item)" [disabled]="customIncreaseValue < 0">
                             ={{ customIncreaseValue }}
                         </button>
                     </ion-col>
-                    <ion-col>
-                        <button ion-fab mini color="light" (click)="decreaseItem(item)">-1</button>
-                    </ion-col>
-                    <ion-col>
-                        <button ion-fab mini color="light" (click)="increaseItem(item)">+1</button>
-                    </ion-col>
-                    <ion-col>
+                    <ion-col col-auto>
                         <button ion-fab mini color="light" (click)="increaseItemCustomValue(item)">
                             <span *ngIf="customIncreaseValue > -1">+</span>{{ customIncreaseValue }}
                         </button>
                     </ion-col>
-                    <ion-col>
+                    <ion-col  col-auto>
                         <button ion-button full clear color="dark">{{ item.nAvailable }}</button>                        
                     </ion-col>
                 </ion-row>

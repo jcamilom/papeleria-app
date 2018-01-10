@@ -58,20 +58,6 @@ export class StockPage {
         }
     }
 
-    public increaseItem(item: Item) {
-        item.nAvailable++;
-        // Push the item's modified value to the updatedItems array
-        this.pushUpdatedItem(item, 'nAvailable');
-    }
-
-    public decreaseItem(item: Item) {
-        if(item.nAvailable > 0) {
-            item.nAvailable--;
-            // Push the item's modified value to the updatedItems array
-            this.pushUpdatedItem(item, 'nAvailable');
-        }
-    }
-
     public increaseItemCustomValue(item: Item) {
         let parsedValue = parseInt(this.customIncreaseValue);
         // Check if it's a valid value
