@@ -211,7 +211,8 @@ export class StockPage {
     }
     
     private createItem() {
-        this.msgProvider.showCreateItemPrompt(this.createItemHandler);
+        this.msgProvider.showAlertPrompt(this.createItemHandler, this.createItemInputs,
+            'Crear un ítem', 'Ingresar las siguientes características:', 'Crear');
     }
 
     public createItemHandler = (data: any) : void => {
@@ -258,6 +259,26 @@ export class StockPage {
             this.msgProvider.presentToast('El ítem no pudo ser añadido. Nombre no válido.', true);
         }
     }
+
+    public createItemInputs = [
+        {
+            name: 'name',
+            placeholder: 'Nombre',
+            type: 'text'
+        },
+        {
+            name: 'price',
+            placeholder: 'Precio',
+            type: 'number',
+            min: 0
+        },
+        {
+            name: 'nAvailable',
+            placeholder: 'Cantidad',
+            type: 'number',
+            min: 0
+        }
+    ];
 
     public modifyItem(item: Item) {
         this.itemToModify = item;

@@ -25,7 +25,7 @@ export class DebtsPage {
         console.log('ionViewDidLoad DebtsPage');
         
         // Set initial pages for our nav controllers...
-        this.masterNav.setRoot(DebtsMaster, { detailNavCtrl: this.detailNav });
+        this.masterNav.setRoot(DebtsMaster, {detailNavCtrl: this.detailNav});
     }
 
     ionViewWillEnter() {
@@ -35,6 +35,10 @@ export class DebtsPage {
             console.log('UpdateAvailable from DebtsPage!');
             this.debtsProvider.getDebts();
         }
+    }
+
+    ionViewWillLeave() {
+        console.log('DebtsPage ionViewWillLeave');
     }
 
 }

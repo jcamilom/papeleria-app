@@ -10,11 +10,11 @@ page-debts-detail {
     }
 
     ion-icon.debt-icon {
-        color: #ff2323;
+        color: color($colors, danger);
     }
 
     ion-icon.debt-icon.paid {
-        color: #85bb65;
+        color: color($colors, success);
     }
 
     .buttons-debt-card button {

@@ -9,6 +9,8 @@ import { Debt } from '../../models/debt';
 @Injectable()
 export class DebtsProvider {
 
+    private debtsEndpoint: string = 'debts';
+
     private debtsSource: BehaviorSubject<Debt[]>;
     public currentDebts: Observable<Debt[]>; 
 
@@ -69,6 +71,22 @@ export class DebtsProvider {
      */
     public getUpdateAvailable(): boolean {
         return this.updateAvailable;
+    }
+
+    public addDebt(debt: Debt) {
+        return this.api.post(this.debtsEndpoint, debt);
+    }
+
+    public updateDebt(debt) {
+        return this.api.put(this.debtsEndpoint + "/" + debt.id, debt.body);
+    }
+
+    public deleteDebt(debt: Debt) {
+        return this.api.delete(this.debtsEndpoint + "/" + debt.id);
+    }
+
+    public findDebtById(debt) {
+        return debt.id === this[0];
     }
 
     public sortByCreatedAtDesc(a, b) {

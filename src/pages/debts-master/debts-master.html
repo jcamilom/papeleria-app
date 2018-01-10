@@ -7,9 +7,9 @@
 
 <ion-content>    
     <ion-list>
-        <button ion-item *ngFor="let debtor of debtors; let idx = index"
-            (click)="onDebtorSelected(debtor, idx)"
-            [class.selected]="idx === currentSelected">
+        <button ion-item *ngFor="let debtor of debtors"
+            (click)="onDebtorSelected(debtor)"
+            [class.selected]="debtor === nameCurrentSelected">
             <h2>{{ debtor }}</h2>
         </button>
     </ion-list>

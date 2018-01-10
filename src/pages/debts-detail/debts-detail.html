@@ -8,7 +8,7 @@
 <ion-content class="cards-bg social-cards">
 
     <ion-fab right bottom>
-        <button ion-fab (click)="createItem()">
+        <button ion-fab (click)="settleDebt()" [disabled]="debt == 0">
             <ion-icon name="calculator"></ion-icon>
         </button>
     </ion-fab>
@@ -50,7 +50,12 @@
                     <ion-icon name='calendar' item-start style="color: #55acee"></ion-icon>
                     Fecha último pago
                     <ion-badge item-end>
-                        {{lastPaymentDate | date:'dd-MM-yyyy'}}
+                        <div *ngIf="lastPaymentDate === undefined; else elseBlock">
+                            Sin pagos
+                        </div>
+                        <ng-template #elseBlock>
+                            {{lastPaymentDate | date:'dd-MM-yyyy'}}
+                        </ng-template>
                     </ion-badge>
                 </ion-item>
 
@@ -89,7 +94,7 @@
                             </button>
                         </ion-col>
                         <ion-col>
-                            <button ion-button icon-left clear small>
+                            <button ion-button icon-left clear small disabled>
                                 <ion-icon name="cash"></ion-icon>
                                 Cobrar
                             </button>

@@ -15,10 +15,9 @@ export class DebtsMasterPage {
 
     private detailNavCtrl: any;
 
-    private currentSelected: number = null;
+    private nameCurrentSelected: string = null;
     private allDebts: Debt[];
     private debtors;
-    private debts: Debt[];
 
 
     constructor(public navCtrl: NavController,
@@ -63,16 +62,18 @@ export class DebtsMasterPage {
 
         // Set the "placeholder"
         if(this.debtors.length > 0) {
-            this.onDebtorSelected(this.debtors[0], 0);
+            if(this.nameCurrentSelected == null) {
+                this.onDebtorSelected(this.debtors[0]);
+            } else {
+                // This is needed when for example the selectedDebor gets a new debt
+                // so the detailsPage needs to be reloaded
+                this.onDebtorSelected(this.nameCurrentSelected);
+            }
         }
     }
 
-    private generateDebts() {
-
-    }
-
-    onDebtorSelected(debtor, idx) {
-        this.currentSelected = idx;
+    onDebtorSelected(debtor) {
+        this.nameCurrentSelected = debtor;
         let selectedDebts = this.allDebts.filter(debt => debt.debtor == debtor);
         // Sort the debts by creation time (desc)
         selectedDebts.sort(this.debtsProvider.sortByCreatedAtDesc);

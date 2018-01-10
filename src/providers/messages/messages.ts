@@ -50,37 +50,21 @@ export class MessagesProvider {
         toast.present();
     }
 
-    public showCreateItemPrompt(createItemHander: (data: any) => any): void {
-        let prompt = this.alertCtrl.create({
-            title: 'Crear un ítem',
-            //message: "Ingresar las siguientes características:",
-            inputs: [
-                {
-                    name: 'name',
-                    placeholder: 'Nombre',
-                    type: 'text'
-                },
-                {
-                    name: 'price',
-                    placeholder: 'Precio',
-                    type: 'number',
-                    min: 0
-                },
-                {
-                    name: 'nAvailable',
-                    placeholder: 'Cantidad',
-                    type: 'number',
-                    min: 0
-                }
-            ],
+    public showAlertPrompt(agreeHandler: (data: any) => any, inputs: any,
+        alertTitle: string, message: string, agreeText: string): void {
+        
+            let prompt = this.alertCtrl.create({
+            title: alertTitle,
+            message: message,
+            inputs: inputs,
             buttons: [
                 {
                     text: 'Cancelar',
                     role: 'cancel'
                 },
                 {
-                    text: 'Crear',
-                    handler: createItemHander
+                    text: agreeText,
+                    handler: agreeHandler
                 }
             ]
         });

@@ -1,4 +1,7 @@
 TODO
+update the related sale
+What if while settling debts the db doesnt reply? local debts have already been changed
+    -> revert changes calling getAllDebts
 dbClick for item in shopingcart
 IMP query filter in itemsProvider
 DEV debtors tab
