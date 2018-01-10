@@ -81,6 +81,10 @@ export class SalesProvider {
         return this.api.delete(this.salesEndpoint + "/" + sale.id);
     }
 
+    public findSaleById(sale) {
+        return sale.id === this[0];
+    }
+
     public sortByCreatedAtDesc(a, b) {
         const dateA = a.createdAt;
         const dateB = b.createdAt;
