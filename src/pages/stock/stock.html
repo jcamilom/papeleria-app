@@ -37,33 +37,38 @@
             </ion-row>
 
             <ion-item *ngFor="let item of queryItems">
+                <!-- <ion-badge item-end>{{ item.nAvailable }}</ion-badge> -->
                 <ion-row>
                     <ion-col>
                         <h2>{{ item.name }}</h2>
+                        <p>
+                            Precio: {{item.price | currency:'COP':'symbol-narrow':'1.0'}}
+                            | ID: {{item.id}} | {{item.nAvailable}}
+                        </p>
                     </ion-col>
-                    <ion-col col-auto>
-                        <button ion-fab mini clear (click)="removeItemEvent(item)">
-                            <ion-icon name="trash"></ion-icon>
+                    <ion-col class="badge-col" col-1>
+                        <ion-badge item-end>{{ item.nAvailable }}</ion-badge>
+                    </ion-col>
+                    <ion-col class="button-col" col-auto>
+                        <button ion-fab mini color="light" (click)="increaseItemCustomValue(item)">
+                            <span *ngIf="customIncreaseValue > -1">+</span>{{ customIncreaseValue }}
                         </button>
                     </ion-col>
-                    <ion-col col-auto>
-                        <button ion-fab mini (click)="modifyItem(item)">
-                            <ion-icon name="create"></ion-icon>
-                        </button>
-                    </ion-col>
-                    <ion-col col-auto>
+                    <ion-col class="button-col" col-auto>
                         <button ion-fab mini color="light"
                             (click)="setItemCustomValue(item)" [disabled]="customIncreaseValue < 0">
                             ={{ customIncreaseValue }}
                         </button>
                     </ion-col>
-                    <ion-col col-auto>
-                        <button ion-fab mini color="light" (click)="increaseItemCustomValue(item)">
-                            <span *ngIf="customIncreaseValue > -1">+</span>{{ customIncreaseValue }}
+                    <ion-col class="button-col" col-auto>
+                        <button ion-fab mini (click)="modifyItem(item)">
+                            <ion-icon name="create"></ion-icon>
                         </button>
                     </ion-col>
-                    <ion-col  col-auto>
-                        <button ion-button full clear color="dark">{{ item.nAvailable }}</button>                        
+                    <ion-col class="button-col" col-auto>
+                        <button ion-fab mini clear (click)="removeItemEvent(item)">
+                            <ion-icon name="trash"></ion-icon>
+                        </button>
                     </ion-col>
                 </ion-row>
             </ion-item>

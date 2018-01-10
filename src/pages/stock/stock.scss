@@ -1,3 +1,14 @@
 page-stock {
+    .button-col button {
+        margin-top: 0px !important;
+    }
+
+    ion-col.badge-col{
+        text-align: center;
+
+        ion-badge {
+            font-size: 1.4rem !important;
+        }
+    }    
 
 }
