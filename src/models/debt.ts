@@ -7,6 +7,7 @@ export class Debt {
     createdAt?: any;
     updatedAt?: any;
     debtor: string;
+    saleId: string;
   
     constructor(fields: any) {
         // Quick and dirty extend/assign fields to this model

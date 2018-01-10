@@ -125,7 +125,7 @@ export class HomeMainPage {
             // Update the stock
             this.updateStock();
             // Add the sale to the database
-            this.salesProvider.AddSale(this.sale).subscribe((resp) => {
+            this.salesProvider.addSale(this.sale).subscribe((resp) => {
                 if(resp.status == 'success') {
                     // Generate the debt
                     if(genDebt) {
@@ -136,7 +136,7 @@ export class HomeMainPage {
                             debtor: this.sale.debtor,
                             saleId: resp.data[0].id
                         };
-                        this.debtsProvider.AddDebt(new Debt(debt)).subscribe((resp) => {
+                        this.debtsProvider.addDebt(new Debt(debt)).subscribe((resp) => {
                             if(resp.status == 'success') {
                                 // Set a flag in debtsProvider, so that first page that uses the global debts
                                 // updates the global value before it opens

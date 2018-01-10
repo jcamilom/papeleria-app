@@ -8,6 +8,8 @@ import { Sale } from '../../models/sale';
 
 @Injectable()
 export class SalesProvider {
+    
+    private salesEndpoint: string = 'sales';
 
     private salesSource: BehaviorSubject<Sale[]>;
     public currentSales: Observable<Sale[]>; 
@@ -27,7 +29,7 @@ export class SalesProvider {
      * broadcasts the received data.
      */
     public getSales() {
-        this.api.get('sales').subscribe((resp) => {
+        this.api.get(this.salesEndpoint).subscribe((resp) => {
             let sales_arr: Sale[] = [];
             if(resp.status == 'success') {
                 let sales = resp.data;
@@ -49,10 +51,6 @@ export class SalesProvider {
         });
     }
 
-    public AddSale(sale: Sale) {
-        return this.api.post('sales', sale);
-    }
-
     public changeSales(sales: Sale[]) {
         this.salesSource.next(sales);
     }
@@ -69,6 +67,18 @@ export class SalesProvider {
      */
     public getUpdateAvailable(): boolean {
         return this.updateAvailable;
+    }
+
+    public addSale(sale: Sale) {
+        return this.api.post(this.salesEndpoint, sale);
+    }
+
+    public updateSale(sale) {
+        return this.api.put(this.salesEndpoint + "/" + sale.id, sale.body);
+    }
+
+    public deleteSale(sale: Sale) {
+        return this.api.delete(this.salesEndpoint + "/" + sale.id);
     }
 
     public sortByCreatedAtDesc(a, b) {

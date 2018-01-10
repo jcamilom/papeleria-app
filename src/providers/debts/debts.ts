@@ -51,10 +51,6 @@ export class DebtsProvider {
         });
     }
 
-    public AddDebt(debt: Debt) {
-        return this.api.post('debts', debt);
-    }
-
     public changeDebts(debts: Debt[]) {
         this.debtsSource.next(debts);
     }

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Debt } from '../../models/debt';
 import { DebtsProvider } from '../../providers/providers';
+import { SalesProvider } from '../../providers/providers';
 import { MessagesProvider } from '../../providers/providers';
 
 const removeDebtTitle: string = 'Eliminar deuda';
@@ -31,6 +32,7 @@ export class DebtsDetailPage {
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         private debtsProvider: DebtsProvider,
+        private salesProvider: SalesProvider,
         private msgProvider: MessagesProvider) {
     }
 
@@ -130,24 +132,7 @@ export class DebtsDetailPage {
                 if(parsedInstallment <= theDebt) {
                     // Pay single debt
                     if(this.debtToPayFlag) {
-                        // Pay a portion of this debt
-                        this.debtToPay.paidValue += parsedInstallment;
-                        // Check if this debt is now fully paid
-                        if(this.debtToPay.value == this.debtToPay.paidValue) this.debtToPay.paid = true;
-                        // Update the debt in the db
-                        let debtToUpdate = {
-                            id: this.debtToPay.id,
-                            body: {
-                                paidValue: this.debtToPay.paidValue,
-                                paid: this.debtToPay.paid}
-                        };
-                        this.updateDebt(debtToUpdate, true);
-                        // Update the values to pay
-                        this.generateSumPaidValues();
-                        this.debt = this.sumValues - this.sumPaidValues;
-                        // Clear the single payment variables
-                        this.debtToPayFlag = false;
-                        this.debtToPay = null;
+                        this.setSingleDebt(parsedInstallment);
                     }
                     // Look for the oldest debts and settle them
                     else {
@@ -173,6 +158,29 @@ export class DebtsDetailPage {
     public settleDebtCancelHandler = (data: any) : void => {
         this.debtToPayFlag = false;
         this.debtToPay = null;
+    }
+
+    public setSingleDebt(installment) {
+        // Pay a portion of this debt
+        this.debtToPay.paidValue += installment;
+        // Check if this debt is now fully paid
+        if(this.debtToPay.value == this.debtToPay.paidValue) this.debtToPay.paid = true;
+        // Update the debt in the db
+        let debtToUpdate = {
+            id: this.debtToPay.id,
+            body: {
+                paidValue: this.debtToPay.paidValue,
+                paid: this.debtToPay.paid}
+        };
+        this.updateDebt(debtToUpdate, true);
+        // Update the values to pay
+        this.generateSumPaidValues();
+        this.debt = this.sumValues - this.sumPaidValues;
+        // Update the related Sale
+        this.updateRelatedSale(this.debtToPay);
+        // Clear the single payment variables
+        this.debtToPayFlag = false;
+        this.debtToPay = null;        
     }
 
     loopSettleDebts(value: number) {
@@ -202,6 +210,9 @@ export class DebtsDetailPage {
             // Update the debt in the db
             let debtToUpdate = {id: debt.id, body: {paidValue: debt.paidValue, paid: debt.paid}};
             this.updateDebt(debtToUpdate, _break);
+            
+            // Update the related Sale
+            this.updateRelatedSale(debt);
 
             if(_break) break;
         }
@@ -241,6 +252,27 @@ export class DebtsDetailPage {
             /* this.msgProvider.presentToast(
                 `No se pudo crear el ítem. Es posible que este ítem
                     ya exista en la base de datos.`, true); */
+            throw(err);
+        });
+    }
+
+    private updateRelatedSale(debt: Debt) {
+        // Sale to update in the DB
+        let saleToUpdate = {
+            id: debt.saleId,
+            body: {
+                paidValue: debt.paidValue,
+                paid: debt.paid}
+        };
+        this.salesProvider.updateSale(saleToUpdate).subscribe((resp) => {
+            if(resp.status == 'success') {
+                console.log("Related debt successfully updated");
+                // Notify that the debts have been updated
+                this.salesProvider.setUpdateAvailable(true);
+            } else {
+                console.log("Related debt couldnt be updated");
+            }
+        }, (err) => { 
             throw(err);
         });
     }
