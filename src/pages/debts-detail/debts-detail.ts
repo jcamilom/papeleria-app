@@ -92,6 +92,19 @@ export class DebtsDetailPage {
                 this.lastPaymentDate = updDate;
             }
         }
+
+        // If nothing found, try to used a paid-at-creation-time date
+        if(defaultDate.getUTCFullYear() == 1970) {
+            for(let debt of this.debts) {
+                if(debt.paidValue == 0) continue;
+
+                let updDate = debt.createdAt;
+                if(updDate > defaultDate) {
+                    defaultDate = updDate;
+                    this.lastPaymentDate = updDate;
+                }
+            }
+        }
     }
 
     public settleDebt(debt?: Debt) {
