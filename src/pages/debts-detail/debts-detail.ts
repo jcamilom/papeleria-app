@@ -256,14 +256,22 @@ export class DebtsDetailPage {
         });
     }
 
-    private updateRelatedSale(debt: Debt) {
+    private updateRelatedSale(debt: Debt, deleted?: boolean) {
         // Sale to update in the DB
-        let saleToUpdate = {
-            id: debt.saleId,
-            body: {
+        let saleToUpdate: any = {id: debt.saleId};
+
+        // Update related sale of a deleted debt
+        if(deleted) {
+            saleToUpdate.body = {debtor: null};
+        }
+        // Update related sale of an updated debt
+        else {
+            saleToUpdate.body = {
                 paidValue: debt.paidValue,
-                paid: debt.paid}
-        };
+                paid: debt.paid
+            };
+        }
+        
         this.salesProvider.updateSale(saleToUpdate).subscribe((resp) => {
             if(resp.status == 'success') {
                 console.log("Related debt successfully updated");
@@ -297,6 +305,9 @@ export class DebtsDetailPage {
                 // The debt exists -> remove it
                 if(index > -1) this.debts.splice(index, 1);
                 console.log("Debt " + resp.data[0].id + " deleted!");
+                // Set debtor == null in the related sale
+                this.updateRelatedSale(resp.data[0], true);
+                // Clear the debtToRemove
                 this.debtToRemove = null;
                 // Set the flag for updating the debts for the other pages (before leaving the page)
                 this.debtsProvider.setUpdateAvailable(true);
