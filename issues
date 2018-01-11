@@ -1,12 +1,10 @@
 TODO
-msg sale removed in salesHistoric
 What if while settling debts the db doesnt reply? local debts have already been changed
     -> revert changes calling getAllDebts
 dbClick for item in shopingcart
 IMP query filter in itemsProvider
 CASE select items to sell, modify stock, sell items???
 sales if today, dont print day
-sales pagination
 <any>? in MatTableDataSource
 progress bar for paidValue?
 rethink the selectedItems logic(specially after changing sidePanel for first tab)
@@ -21,3 +19,4 @@ DEV Basic styling
 DEV Abono
 DEV debtors tab
 FIX update the related sale
+DEV sales tabs

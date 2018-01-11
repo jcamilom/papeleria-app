@@ -125,11 +125,6 @@ export class HomeMainPage {
         this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
     }
 
-    private toggleCredit() {
-        
-        console.log(this.credit);
-    }
-
     public generateSale() {
         if(this.sale.value > 0) {
             // Ask if debtor checkbox

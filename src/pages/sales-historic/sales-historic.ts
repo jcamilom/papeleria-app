@@ -19,9 +19,15 @@ const removeAttachedSaleMessage: string = `La venta que desea eliminar está lig
 })
 export class SalesHistoricPage {
 
+    private allSales: Sale[];
     public displayedColumns = ['id', 'createdAt', 'value', 'paid', 'paidValue', 'updatedAt', 'debtor'];
     private dataSource: MatTableDataSource<any>;
     private saleToRemove: Sale;
+    private todayDate: Date;
+    private weekDate: Date;
+    private monthDate: Date;
+    // Segment selector
+    private date: string;
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -34,9 +40,14 @@ export class SalesHistoricPage {
 
         this.dataSource = new MatTableDataSource<Sale[]>();
 
+        // Initialize the segment
+        this.date = "today";
+
         this.salesProvider.currentSales.subscribe(sales => {
             sales.sort(this.salesProvider.sortByCreatedAtDesc);
-            this.dataSource.data = sales;
+            this.allSales = sales;
+            // Populate the table acording to the selected segment
+            this.populateTable();
         });
 
         // Get all sales for provider
@@ -91,6 +102,65 @@ export class SalesHistoricPage {
             console.log("The sale couldnt be deleted");
             throw(err);
         });
+    }
+
+    printDate(sale) {
+        console.log(sale.createdAt);
+        console.log("createdAt: " + sale.createdAt);
+        console.log("Day: " + sale.createdAt.getDate());
+        sale.createdAt.setHours(0,0,0,0);
+        console.log(sale.createdAt);
+        console.log("00:00-> " + sale.createdAt);
+    }
+
+    populateTable() {
+        switch(this.date) {
+            case 'today':
+                this.generateTodayDate();
+                // Filter the sales
+                this.dataSource.data = this.allSales.filter(sale => sale.createdAt > this.todayDate);
+                break;
+            case 'week':
+                this.generateWeekDate();
+                // Filter the sales
+                this.dataSource.data = this.allSales.filter(sale => sale.createdAt > this.weekDate);
+                break;
+            case 'custom':
+                this.dataSource.data = this.allSales;
+                break;
+            default:
+                break;
+        }
+    }
+
+    generateTodayDate() {
+        this.todayDate = new Date();
+        // setHours and not setUTCHours, so time its set to 05:00:00 when the app runs in -05GMT
+        this.todayDate.setHours(0,0,0,0);
+    }
+
+    generateWeekDate() {
+        this.weekDate = new Date();
+        this.weekDate.setHours(0,0,0,0);
+        this.setDayToMonday(this.weekDate);
+    }
+
+    generateMonthDate() {
+
+    }
+
+    // Set day to monday this week
+    setDayToMonday(date: Date) {
+        let dayOfTheWeek = date.getDay();
+        // For Tuesday till saturday
+        if(dayOfTheWeek > 1) {
+            date.setDate(date.getDate() - (dayOfTheWeek - 1));
+        }
+        // For Sunday
+        else if (dayOfTheWeek == 0) {
+            date.setDate(date.getDate() - 6);
+        }
+        console.log(this.weekDate);
     }
 
 }

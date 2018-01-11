@@ -107,7 +107,7 @@ export class SearchPage {
         this.itemsProvider.changeSelectedItems(this.selectedItems);
     }
 
-    private removeItem(item: Item, itemsArr: Item[]) {
+    public removeItem(item: Item, itemsArr: Item[]) {
         itemsArr.splice(this.selectedItems.indexOf(item), 1);
     }
 

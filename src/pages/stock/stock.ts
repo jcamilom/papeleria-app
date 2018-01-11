@@ -196,7 +196,7 @@ export class StockPage {
         this.updatedItems = [];
     }
     
-    private createItem() {
+    public createItem() {
         this.msgProvider.showAlertPrompt(this.createItemHandler, this.createItemInputs,
             'Crear un ítem', 'Ingresar las siguientes características:', 'Crear');
     }
