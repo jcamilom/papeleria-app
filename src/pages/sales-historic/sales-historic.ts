@@ -79,6 +79,8 @@ export class SalesHistoricPage {
         this.salesProvider.deleteSale(sale).subscribe((resp) => {
             if(resp.status == 'success') {
                 console.log(resp.data[0].id + " deleted!");
+                // Notify the user that the sale was successfully deleted
+                this.msgProvider.presentToast('Venta eliminada exitosamente.');
                 this.saleToRemove = null;
                 // Update this page
                 this.salesProvider.getSales();
