@@ -304,6 +304,7 @@ export class StockPage {
                     // Push the item's modified value to the updatedItems array
                     this.pushUpdatedItem(this.itemToModify, keyToUpdate);
                 }
+                this.allItems.sort(this.itemsProvider.sortByName);
             } else {
                 // Do not update a shit. Say there is an invalid value
             }
