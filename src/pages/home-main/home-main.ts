@@ -20,7 +20,9 @@ const removeItemMessage: string = '¿Remover ítem del carrito de ventas?';
 export class HomeMainPage {
 
     private selectedItems: Item[] = [];
+    private customItems: any[] = [];
     private itemToRemove: Item;
+    private customItemToRemove: number;
     private sale: Sale = new Sale({value: 0, paid: false, paidValue: 0});
     private count: number;
     private nItemsToSale: number;
@@ -54,6 +56,10 @@ export class HomeMainPage {
         for(let item of this.selectedItems) {
             this.sale.value += (item.price * item.nSelected);
         }
+        // Sum customItems too
+        for(let item of this.customItems) {
+            this.sale.value += (item.price * item.nSelected);
+        }
     }
 
     public increaseItem(item: Item) {
@@ -66,7 +72,7 @@ export class HomeMainPage {
         }
     }
 
-    public decreaseItem(item: Item) {
+    public decreaseItem(item: any) {
         if(item.nSelected > 1) {
             item.nSelected--;
             this.findSaleValue();
@@ -76,11 +82,37 @@ export class HomeMainPage {
         }
     }
 
+    public increaseCustomItem(item: any) {
+        item.nSelected++;
+        this.findSaleValue();
+    }
+
+    public decreaseCustomItem(item: any, index: number) {
+        if(item.nSelected > 1) {
+            item.nSelected--;
+            this.findSaleValue();
+        } else {
+            // Ask before remove
+            this.swipeEventCustom(item, index);
+        }
+    }
+
     private swipeEvent(item: Item) {
         // Tag the item to remove
         this.itemToRemove = item;
         // Show confirmation alert
         this.msgProvider.showConfirmAlert(this.removeItemHandler, removeItemTitle, removeItemMessage);
+    }
+
+    private swipeEventCustom(item: any, index: number) {
+        // Tag the item to remove
+        this.customItemToRemove = index;
+        // Show confirmation alert
+        this.msgProvider.showConfirmAlert(() => {
+                this.customItems.splice(index, 1);
+                this.customItemToRemove = null;
+                this.findSaleValue();
+            }, removeItemTitle, removeItemMessage);
     }
 
     public removeItemHandler = () => {
@@ -152,6 +184,8 @@ export class HomeMainPage {
                     this.sale.clearSale();
                     // Clear the selected Items
                     this.selectedItems = [];
+                    // Clear the customItems
+                    this.customItems = [];
                     // Update the selected items (for the search page)
                     this.itemsProvider.changeSelectedItems(this.selectedItems);
                     // Set a flag in salesProvider, so that first page that uses the global sales
@@ -210,4 +244,52 @@ export class HomeMainPage {
         }
     }
 
+    createCustomSale() {
+        this.msgProvider.showAlertPrompt(this.createCustomSaleHandler,
+            [{name: 'value', type: 'number', min: 0, placeholder: String('Valor')}],
+            'Agregar ítem de venta', 'Ingresar el valor del ítem:', 'Crear');
+    }
+
+    public createCustomSaleHandler = (data: any) : void => {
+        let parsedValue: number = parseInt(data.value);
+        // Check if it's a valid value
+        if(!isNaN(parsedValue)) {
+            // Chek if it's a positive value
+            if(parsedValue >= 0) {
+                let customItem = {price: parsedValue, nSelected: 1};
+                this.customItems.push(customItem);
+                
+                this.findSaleValue();
+
+                /* // Check if the value is less than the debt
+                if(parsedValue <= theDebt) {
+                    // Pay single debt
+                    if(this.debtToPayFlag) {
+                        this.setSingleDebt(parsedValue);
+                    }
+                    // Look for the oldest debts and settle them
+                    else {
+                        this.loopSettleDebts(parsedValue); 
+                    }                    
+                } else {
+                    // Bigger value
+                    this.msgProvider.presentToast(
+                        "No se pudo generar el abono. El valor ingresado es mayor a la deuda.", true);
+                } */
+            } else {
+                // Negative value
+                this.msgProvider.presentToast(
+                    "No se pudo crear el ítem. El valor ingresado debe ser positivo.", true);
+            }
+        } else {
+            // Not valid number
+            this.msgProvider.presentToast(
+                "No se pudo crear el ítem. El valor ingresado no es válido.", true);
+        }
+    }
+
+    public settleDebtCancelHandler = (data: any) : void => {
+        /* this.debtToPayFlag = false;
+        this.debtToPay = null; */
+    }
 }

@@ -1,4 +1,5 @@
 TODO
+msg sale removed in salesHistoric
 What if while settling debts the db doesnt reply? local debts have already been changed
     -> revert changes calling getAllDebts
 dbClick for item in shopingcart
