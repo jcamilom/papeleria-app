@@ -25,9 +25,16 @@ export class SalesHistoricPage {
     private saleToRemove: Sale;
     private todayDate: Date;
     private weekDate: Date;
-    private monthDate: Date;
-    // Segment selector
-    private date: string;
+    private dateSegmentSelector: string;
+    private startCustomDate: Date;
+    private endCustomDate: Date;
+
+    public customDate = {
+        startDate: '2018-01-01',
+        startTime: '08:00',
+        endDate: '2018-01-01',
+        endTime: '23:59',
+    }
 
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
@@ -41,7 +48,7 @@ export class SalesHistoricPage {
         this.dataSource = new MatTableDataSource<Sale[]>();
 
         // Initialize the segment
-        this.date = "today";
+        this.dateSegmentSelector = "today";
 
         this.salesProvider.currentSales.subscribe(sales => {
             sales.sort(this.salesProvider.sortByCreatedAtDesc);
@@ -114,7 +121,7 @@ export class SalesHistoricPage {
     }
 
     populateTable() {
-        switch(this.date) {
+        switch(this.dateSegmentSelector) {
             case 'today':
                 this.generateTodayDate();
                 // Filter the sales
@@ -126,7 +133,8 @@ export class SalesHistoricPage {
                 this.dataSource.data = this.allSales.filter(sale => sale.createdAt > this.weekDate);
                 break;
             case 'custom':
-                this.dataSource.data = this.allSales;
+                this.generateCustomDate();
+                this.customSearch();
                 break;
             default:
                 break;
@@ -145,10 +153,6 @@ export class SalesHistoricPage {
         this.setDayToMonday(this.weekDate);
     }
 
-    generateMonthDate() {
-
-    }
-
     // Set day to monday this week
     setDayToMonday(date: Date) {
         let dayOfTheWeek = date.getDay();
@@ -161,6 +165,35 @@ export class SalesHistoricPage {
             date.setDate(date.getDate() - 6);
         }
         console.log(this.weekDate);
+    }
+
+    generateCustomDate() {
+        // Initialize the todayDate
+        this.generateTodayDate();
+
+        // Initialize the customDate
+        let todayLocaleISOString = this.getLocaleISOString(this.todayDate);
+        let splitedByT = todayLocaleISOString.split('T');
+        this.customDate.startDate = splitedByT[0];
+        this.customDate.startTime = splitedByT[1].split('.')[0];
+        this.customDate.endDate = splitedByT[0];
+        this.customDate.endTime = this.getLocaleISOString(new Date()).split('T')[1].split('.')[0];
+    }
+    
+    getLocaleISOString(date: Date) {
+        let date_copy = new Date(date.getTime());
+        let currentTimeZoneOffset = date_copy.getTimezoneOffset();
+        date_copy.setUTCMinutes(date_copy.getUTCMinutes() - currentTimeZoneOffset);
+        
+        return date_copy.toISOString();
+    }
+
+    customSearch() {
+        this.startCustomDate = new Date(this.customDate.startDate + 'T' + this.customDate.startTime);
+        this.endCustomDate = new Date(this.customDate.endDate + 'T' + this.customDate.endTime);
+        // Filter the sales whitin the range
+        this.dataSource.data = this.allSales.filter(sale => 
+            sale.createdAt > this.startCustomDate && sale.createdAt < this.endCustomDate);
     }
 
 }
