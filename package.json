@@ -1,6 +1,6 @@
 {
     "name": "papeleria-app",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": {
         "name": "Camilo Muñoz",
         "email": "jcamilomunozz@gmail.com",
@@ -22,7 +22,7 @@
     "build": {
         "appId": "com.xingke.papeleria-app",
         "productName": "Papeleria App",
-        "copyright": "Copyright © 2017 Camilo Muñoz",
+        "copyright": "Copyright © 2018 Camilo Muñoz",
         "electronVersion": "1.7.5",
         "asar": false,
         "files": [
@@ -39,6 +39,11 @@
                 }
             ],
             "icon": "www/assets/icons/win/icon.ico"
+        },
+        "linux": {
+            "target": "AppImage",
+            "icon": "www/assets/icons/png/",
+            "category": "Utility"
         }
     },
     "config": {
